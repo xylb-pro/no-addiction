@@ -1,0 +1,1 @@
+INSERT INTO "NoAddiction".users (_id, username, email) VALUES (0, 'vlad99902ipad', 'vlad99902ipad@ya.ru');
