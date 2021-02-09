@@ -7,7 +7,7 @@ import { loginWithEmail } from '../store/users/usersActions';
 import { Link } from 'react-router-dom';
 import { Image } from '../components/Image';
 import { Title } from '../components/Title';
-import { Input } from '../components/Input';
+import { InputField } from '../components/InputField';
 import { Button } from '../components/Button';
 import GoogleIcon from '../assets/GoogleIcon.png';
 import { Container } from '../components/Container';
@@ -29,8 +29,14 @@ export const LoginPage: React.FC = () => {
     authPassword: '',
   });
 
-  const [isValidLogin] = useInputValidation(form.authLogin, 'login');
-  const [isValidPassword] = useInputValidation(form.authPassword, 'password');
+  const [isValidLogin, loginInvalidMsg] = useInputValidation(
+    form.authLogin,
+    'login'
+  );
+  const [isValidPassword, passwordInvalidMsg] = useInputValidation(
+    form.authPassword,
+    'password'
+  );
 
   const [isValidLoginOnSubmit, setIVLOS] = useState<boolean>(true);
   const [isValidPasswordOnSubmit, setIVPOS] = useState<boolean>(true);
@@ -47,6 +53,8 @@ export const LoginPage: React.FC = () => {
     if (valid === 2) {
       dispatch(loginWithEmail(form.authLogin, form.authPassword));
       setForm({ authLogin: '', authPassword: '' });
+      setIVLOS(true);
+      setIVPOS(true);
     } // else login and pass not valid
   };
 
@@ -85,7 +93,7 @@ export const LoginPage: React.FC = () => {
               margin="0 auto"
               position="relative"
             >
-              <Input
+              <InputField
                 placeholder="E-Mail or Login"
                 type="text"
                 name="authLogin"
@@ -93,9 +101,8 @@ export const LoginPage: React.FC = () => {
                 value={form.authLogin}
                 valid={isValidLoginOnSubmit || isValidLogin}
                 id="authLogin"
-              >
-                Минимальная длина логина/почты 5 символов
-              </Input>
+                messageText={loginInvalidMsg}
+              />
             </Container>
             <Container
               marginBottom="32px"
@@ -103,7 +110,7 @@ export const LoginPage: React.FC = () => {
               margin="0 auto"
               position="relative"
             >
-              <Input
+              <InputField
                 placeholder="Password"
                 type={visible ? 'text' : 'password'}
                 name="authPassword"
@@ -112,9 +119,8 @@ export const LoginPage: React.FC = () => {
                 style={{ paddingRight: '36px' }}
                 valid={isValidPasswordOnSubmit || isValidPassword}
                 id="authPassword"
-              >
-                Минимальная длина пароля 6 символов
-              </Input>
+                messageText={passwordInvalidMsg}
+              />
               <Container
                 width="22px"
                 style={{

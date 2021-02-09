@@ -11,11 +11,12 @@ interface IInputArea {
 interface IStyleProps {
   styleProps?: IInputArea;
 }
-interface IInput extends InputHTMLAttributes<HTMLInputElement> {
+interface IInputField extends InputHTMLAttributes<HTMLInputElement> {
   styleProps?: IInputArea;
   style?: React.CSSProperties;
   valid?: boolean;
-  massageType?: 'sever' | 'warning';
+  messageType?: 'sever' | 'warning';
+  messageText?: string;
 }
 
 /**
@@ -27,12 +28,12 @@ interface IInput extends InputHTMLAttributes<HTMLInputElement> {
  * @param {string} children
  * @returns
  */
-export const Input: React.FC<IInput> = ({
+export const InputField: React.FC<IInputField> = ({
   styleProps,
   style,
   valid = true,
-  massageType,
-  children,
+  messageType,
+  messageText,
   ...rest
 }) => {
   const invalidStyle: React.CSSProperties = {
@@ -47,8 +48,8 @@ export const Input: React.FC<IInput> = ({
         autoComplete="off"
         style={{ ...style }}
       />
-      <Notice type={massageType} display={valid ? 'none' : 'block'}>
-        {children}
+      <Notice type={messageType} display={valid ? 'none' : 'block'}>
+        {messageText}
       </Notice>
     </>
   );

@@ -7,17 +7,15 @@ import { registerWithEmail, authWithGoogle } from '../store/users/usersActions';
 import { useDispatch } from 'react-redux';
 
 import { Image } from '../components/Image';
-import { Input } from '../components/Input';
+import { InputField } from '../components/InputField';
 import { Title } from '../components/Title';
 import { Button } from '../components/Button';
 import GoogleIcon from '../assets/GoogleIcon.png';
 import { Container } from '../components/Container';
 import { VisibilityOn } from '../assets/VisibilityOn';
 import { VisibilityOff } from '../assets/VisibilityOff';
-import { ProgressBar } from '../components/ProgressBar';
 import { googleLoginUrl } from '../constants/queryGoogleAuth';
 import { useInputValidation } from '../hooks/useInputValidation.hook';
-import { usePasswordValidation } from '../hooks/usePasswordValidation.hook';
 
 interface IForm {
   email: string;
@@ -35,10 +33,17 @@ export const RegisterPage: React.FC = () => {
     password: '',
   });
 
-  const [isValidLogin] = useInputValidation(form.login, 'login');
-  const [isValidEmail] = useInputValidation(form.email, 'email');
-  const [isValidPassword, passwordStrong] = usePasswordValidation(
-    form.password
+  const [isValidLogin, loginInvalidMsg] = useInputValidation(
+    form.login,
+    'login'
+  );
+  const [isValidEmail, emailInvalidMsg] = useInputValidation(
+    form.email,
+    'email'
+  );
+  const [isValidPassword, passwordInvalidMsg] = useInputValidation(
+    form.password,
+    'passwordOnReg'
   );
 
   const [isValidEmailOnSubmit, setIVEOS] = useState<boolean>(true);
@@ -60,6 +65,9 @@ export const RegisterPage: React.FC = () => {
     if (valid === 3) {
       dispatch(registerWithEmail(form.login, form.email, form.password));
       setForm({ login: '', password: '', email: '' });
+      setIVLOS(true);
+      setIVPOS(true);
+      setIVEOS(true);
     } // else login and pass not valid
   };
 
@@ -75,7 +83,6 @@ export const RegisterPage: React.FC = () => {
     e.target.removeAttribute('readOnly');
   };
 
-  //TODO кирилл почичтсить лишние атрибуты input. мб input error не children??
   return (
     <>
       <Container
@@ -109,7 +116,7 @@ export const RegisterPage: React.FC = () => {
               margin="0 auto"
               position="relative"
             >
-              <Input
+              <InputField
                 placeholder="E-Mail"
                 type="text"
                 name="email"
@@ -121,9 +128,8 @@ export const RegisterPage: React.FC = () => {
                 onFocus={(e) => {
                   removeReadonly(e);
                 }}
-              >
-                Введите корректный адрес электронной почты
-              </Input>
+                messageText={emailInvalidMsg}
+              />
             </Container>
             <Container
               marginBottom="16px"
@@ -131,7 +137,7 @@ export const RegisterPage: React.FC = () => {
               margin="0 auto"
               position="relative"
             >
-              <Input
+              <InputField
                 placeholder="Login"
                 type="text"
                 name="login"
@@ -139,9 +145,8 @@ export const RegisterPage: React.FC = () => {
                 value={form.login}
                 valid={isValidLoginOnSubmit || isValidLogin}
                 id="login"
-              >
-                Логин должен содержать не менее 5 символов
-              </Input>
+                messageText={loginInvalidMsg}
+              />
             </Container>
             <Container
               maxWidth="360px"
@@ -149,7 +154,7 @@ export const RegisterPage: React.FC = () => {
               marginBottom="10px"
               position="relative"
             >
-              <Input
+              <InputField
                 placeholder="Password"
                 type={visible ? 'text' : 'password'}
                 name="password"
@@ -159,10 +164,8 @@ export const RegisterPage: React.FC = () => {
                 style={{ paddingRight: '36px' }}
                 id="password"
                 autoComplete="new-password"
-              >
-                Пароль должен содержать минимум 6 символов, 1 заглавную букву и
-                1 число
-              </Input>
+                messageText={passwordInvalidMsg}
+              />
 
               <Container
                 width="22px"
@@ -177,12 +180,13 @@ export const RegisterPage: React.FC = () => {
                 {visible ? <VisibilityOn /> : <VisibilityOff />}
               </Container>
             </Container>
-            <Container maxWidth="360px" margin="0px auto 30px">
+            {/* <Container maxWidth="360px" margin="0px auto 30px">
               <ProgressBar
                 fill={passwordStrong}
+                maxFill={globalPasswordMaxStrong}
                 passwordLength={form.password.length}
               />
-            </Container>
+            </Container> */}
 
             <Container pos="center">
               <Button

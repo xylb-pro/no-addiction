@@ -5,12 +5,12 @@ export const passwordOptions = {
   minNumbers: 1,
   minSymbols: 0,
   returnScore: false,
-  pointsPerUnique: 1.5,
-  pointsPerRepeat: 0.1,
-  pointsForContainingLower: 5,
-  pointsForContainingUpper: 5,
-  pointsForContainingNumber: 5,
-  pointsForContainingSymbol: 5,
+  pointsPerUnique: 2,
+  pointsPerRepeat: 1,
+  pointsForContainingLower: 10,
+  pointsForContainingUpper: 10,
+  pointsForContainingNumber: 10,
+  pointsForContainingSymbol: 10,
 };
 
 export const globalPasswordStrong = {
@@ -20,6 +20,8 @@ export const globalPasswordStrong = {
   good: 60,
   veryGood: 80,
 };
+
+export const globalPasswordMaxStrong = 50;
 
 export const loginOptions = {
   min: 5,
