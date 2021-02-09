@@ -42,13 +42,13 @@ where begin_date = (select max(begin_date) from "NoAddiction".timers) AND timers
  * @param {number} limit - limit rows
  */
 
-const getRecordsListWithDuration = async (userId, limit = 10) => {
+const getRecordsListWithDuration = async (userId, categoryId, limit = 10) => {
   const queryResult = await connectDb.query(
     `
   SELECT timers._id, timers.begin_date, timers.end_date ,timers.end_date FROM "NoAddiction".timers
-  WHERE timers.end_date IS NOT NULL AND timers.user_id = $2
+  WHERE timers.end_date IS NOT NULL AND timers.user_id = $2 AND category_id = $3
   ORDER BY end_date-begin_date DESC LIMIT $1`,
-    [limit, userId],
+    [limit, userId, categoryId],
   );
 
   return queryResult;

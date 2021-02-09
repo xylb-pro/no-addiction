@@ -61,9 +61,9 @@ const updateCurrentTimerEndDate = async (userId, id, date) => {
   }
 };
 
-const getRecordsListWithDuration = async (userId, limit) => {
+const getRecordsListWithDuration = async (userId, categoryId, limit) => {
   try {
-    let result = await db.getRecordsListWithDuration(userId, limit);
+    let result = await db.getRecordsListWithDuration(userId, categoryId, limit);
     result = result.rows.map((el) => {
       return {
         recordId: el._id,

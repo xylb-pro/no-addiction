@@ -1,5 +1,7 @@
 import { selectUserOnlyCurrentCategories } from './usersReducer';
 
+import { fetchRecordsList } from '../timers/timersActions';
+
 import {
   FETCH_REGISTER_EMAIL,
   IUsersState,
@@ -293,6 +295,9 @@ export const changeCurrentCategoryId = (
         payload: { currentCategoryId: value },
       });
     }
+
+    //fetch new records list
+    await dispatch(fetchRecordsList());
   };
 };
 

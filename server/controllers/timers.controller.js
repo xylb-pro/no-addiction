@@ -70,9 +70,14 @@ class TimersController {
     const userId = req.user.userId;
     try {
       let limit = req.query.limit;
+      const categoryId = req.query.categoryId;
       // if (!limit) limit = 10;
 
-      const result = await services.getRecordsListWithDuration(userId, limit);
+      const result = await services.getRecordsListWithDuration(
+        userId,
+        categoryId,
+        limit,
+      );
 
       res.json(result);
     } catch (error) {

@@ -62,7 +62,9 @@ export const fetchRecordsList = (): AsyncActionType => {
   return async (dispatch, getState) => {
     try {
       const result = await requestHTTP(
-        `${backEndLink}/api/timers/records`,
+        `${backEndLink}/api/timers/records?categoryId=${
+          getState().users.currentCategoryId
+        }`,
         'GET',
         getState().users.token,
       );
