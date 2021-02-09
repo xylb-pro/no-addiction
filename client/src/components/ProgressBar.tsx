@@ -20,11 +20,11 @@ export const ProgressBar: React.FC<IProgressBar> = ({
     fill = (fill / maxFill) * 100;
     if (fill > globalPasswordStrong.bad && passwordLength > 5)
       currentColor = colors.$orange;
-    if (fill > globalPasswordStrong.normal && passwordLength > 13)
+    if (fill > globalPasswordStrong.normal && passwordLength > 10)
       currentColor = colors.$yellow;
-    if (fill > globalPasswordStrong.good && passwordLength > 18)
+    if (fill > globalPasswordStrong.good && passwordLength > 13)
       currentColor = colors.$green;
-    if (fill > globalPasswordStrong.veryGood && passwordLength > 25)
+    if (fill > globalPasswordStrong.veryGood && passwordLength > 15)
       currentColor = colors.$blue;
     return { currentColor, fill };
   };

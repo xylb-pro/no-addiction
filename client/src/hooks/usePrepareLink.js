@@ -1,6 +1,6 @@
 import { useLocation, useRouteMatch } from 'react-router-dom';
 
-export default ({
+export const usePrepareLink = ({
   to,
   isRelativePath = false,
   query = {},
@@ -43,3 +43,5 @@ export default ({
     state,
   };
 };
+
+export default usePrepareLink;

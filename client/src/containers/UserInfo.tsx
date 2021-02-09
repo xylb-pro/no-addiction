@@ -13,12 +13,9 @@ import {
   changeUserPassword,
   clearAuthSession,
 } from '../store/users/usersActions';
-import { Input } from '../components/Input';
+import { InputField } from '../components/InputField';
 import { VisibilityOn } from '../assets/VisibilityOn';
 import { VisibilityOff } from '../assets/VisibilityOff';
-import { globalPasswordStrong } from '../constants/validationConst';
-import { ProgressBar } from '../components/ProgressBar';
-import { usePasswordValidation } from '../hooks/usePasswordValidation.hook';
 import { useInputValidation } from '../hooks/useInputValidation.hook';
 
 interface IForm {
@@ -32,6 +29,9 @@ export const UserInfo: React.FC<HTMLAttributes<HTMLDivElement>> = ({
   const dispatch = useDispatch();
   const userInfo = useSelector((state: RootState) => state.users);
 
+  const [displayPasswordField, setDisplayPasswordField] = useState<boolean>(
+    false
+  );
   const [visible, setVisible] = useState<boolean>(false);
 
   const [form, setForm] = useState<IForm>({
@@ -39,21 +39,36 @@ export const UserInfo: React.FC<HTMLAttributes<HTMLDivElement>> = ({
     newPassword: '',
   });
 
-  const [isOldPasswordValid] = useInputValidation(form.oldPassword, 'password');
-
-  const [isNewPasswordValid, newPasswordStrong] = usePasswordValidation(
-    form.newPassword
+  const [isValidOldPassword, oldPasswordInvalidMsg] = useInputValidation(
+    form.oldPassword,
+    'password'
   );
+  const [isValidNewPassword, newPasswordInvalidMsg] = useInputValidation(
+    form.newPassword,
+    'passwordOnReg'
+  );
+
+  const [isValidOldPasswordOnSubmit, setIVNPOS] = useState<boolean>(true);
+  const [isValidNewPasswordOnSubmit, setIVOPOS] = useState<boolean>(true);
 
   const submitChangePasswordForm = (e: any) => {
     e.preventDefault();
-    let valid = 0;
-    isOldPasswordValid ? valid++ : console.log('Password length less then 6');
-    isNewPasswordValid ? valid++ : console.log('New Password so weak');
-    if (valid === 2) {
-      dispatch(changeUserPassword(form.oldPassword, form.newPassword));
-      setForm({ oldPassword: '', newPassword: '' });
-    }
+    if (displayPasswordField) {
+      let valid = 0;
+      if (isValidOldPassword) {
+        valid++;
+      } else setIVOPOS(false);
+      if (isValidNewPassword) {
+        valid++;
+      } else setIVNPOS(false);
+      if (valid === 2) {
+        dispatch(changeUserPassword(form.oldPassword, form.newPassword));
+        setForm({ oldPassword: '', newPassword: '' });
+        setIVOPOS(true);
+        setIVNPOS(true);
+        setDisplayPasswordField(false);
+      }
+    } else setDisplayPasswordField(true);
   };
 
   const changeHandler = (event: any) => {
@@ -104,63 +119,52 @@ export const UserInfo: React.FC<HTMLAttributes<HTMLDivElement>> = ({
             </SecondButton>
           </Container>
         </Container>
-
-        <Container marginTop="10px" position="relative">
-          <Input
-            placeholder="oldPassword"
-            type="password"
-            name="oldPassword"
-            onChange={(e) => changeHandler(e)}
-            value={form.oldPassword}
-            valid={form.oldPassword.length > 5 || form.oldPassword.length === 0}
-            style={{ paddingRight: '36px' }}
-            id="oldPassword"
-            autoComplete="new-password"
-          >
-            Пароль должен содержать минимум 6 символов, 1 заглавную букву и 1
-            число
-          </Input>
-        </Container>
-        <Container position="relative">
-          <Container marginTop="10px">
-            <Input
-              placeholder="newPassword"
-              type={visible ? 'text' : 'password'}
-              name="newPassword"
+        <Container display={displayPasswordField ? 'block' : 'none'}>
+          <Container marginTop="10px" position="relative">
+            <InputField
+              placeholder="oldPassword"
+              type="password"
+              name="oldPassword"
               onChange={(e) => changeHandler(e)}
-              value={form.newPassword}
-              valid={
-                newPasswordStrong > globalPasswordStrong.bad ||
-                form.newPassword.length === 0
-                  ? true
-                  : false
-              }
+              value={form.oldPassword}
+              valid={isValidOldPasswordOnSubmit || isValidOldPassword}
               style={{ paddingRight: '36px' }}
-              id="newPassword"
-              autoComplete="new-password"
+              id="oldPassword"
+              messageText={oldPasswordInvalidMsg}
+            />
+          </Container>
+          <Container position="relative">
+            <Container marginTop="10px">
+              <InputField
+                placeholder="newPassword"
+                type={visible ? 'text' : 'password'}
+                name="newPassword"
+                onChange={(e) => changeHandler(e)}
+                value={form.newPassword}
+                valid={isValidNewPasswordOnSubmit || isValidNewPassword}
+                style={{ paddingRight: '36px' }}
+                messageText={newPasswordInvalidMsg}
+              />
+            </Container>
+            <Container
+              width="22px"
+              style={{
+                position: 'absolute',
+                right: '15px',
+                top: '12px',
+                userSelect: 'none',
+              }}
+              onClick={changeVisible}
             >
-              Пароль должен содержать минимум 6 символов, 1 заглавную букву и 1
-              число
-            </Input>
+              {visible ? <VisibilityOn /> : <VisibilityOff />}
+            </Container>
           </Container>
-          <Container
-            width="22px"
-            style={{
-              position: 'absolute',
-              right: '15px',
-              top: '12px',
-              userSelect: 'none',
-            }}
-            onClick={changeVisible}
-          >
-            {visible ? <VisibilityOn /> : <VisibilityOff />}
-          </Container>
-        </Container>
-        <Container maxWidth="95%" margin="10px auto 0px">
+          {/* <Container maxWidth="95%" margin="10px auto 0px">
           <ProgressBar
             fill={newPasswordStrong}
             passwordLength={form.newPassword.length}
           />
+        </Container> */}
         </Container>
       </form>
     </Container>
