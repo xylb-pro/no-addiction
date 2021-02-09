@@ -1,8 +1,11 @@
 import React from 'react';
 
 import { RecordsPage } from './RecordsPage';
-import { StatusPage } from './StatusPage';
 import { Container } from '../components/Container';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/rootReducer';
+import { InAddiction } from '../containers/InAddiction';
+import { OutAddiction } from '../containers/OutAddiction';
 // import { animationSpeed } from '../constants/validationConst';
 
 // const param = {
@@ -12,6 +15,9 @@ import { Container } from '../components/Container';
 // };
 
 export const MainPage: React.FC = () => {
+  const inAddiction = useSelector(
+    (state: RootState) => state.timers.inAddiction,
+  );
   // const scroll = () => {
   //   if (param.action === 1 || document.location.hash === '') {
   //     param.action = 1;
@@ -65,16 +71,21 @@ export const MainPage: React.FC = () => {
   //   };
   // }, []);
 
-  //TODO упразднить status page. Вставить if из status page
   return (
     <Container margin="100px auto 0" height="calc(200vh - 200px)">
       <div style={{ height: 'calc(100% - 100px)' }}>
-        <section>
-          <StatusPage />
-        </section>
-        <section id="records" style={{}}>
+        <Container
+          maxWidth="1600px"
+          margin="0 auto"
+          padding="100px 18px 0px"
+          height="calc(100vh - 100px)"
+        >
+          {inAddiction ? <InAddiction /> : <OutAddiction />}
+        </Container>
+
+        <div id="records" style={{}}>
           <RecordsPage />
-        </section>
+        </div>
       </div>
     </Container>
   );
