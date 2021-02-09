@@ -11,22 +11,22 @@ import { SwitchButton } from '../components/SwitchButton';
 import { colors } from '../styles/colors';
 import { Button } from '../components/Button';
 
-import logo from '../assets/logoNoAlco.png';
 import profileIcon from '../assets/profileIcon.png';
 import { scrollToElement } from '../functions/scrollToElement';
-import { Link, Route, useHistory, useLocation } from 'react-router-dom';
+import { Link, Route, useHistory } from 'react-router-dom';
 import { Modal } from './Modal';
 import { SettingsPage } from '../pages/SettingsPage';
+import { CategoriesNav } from '../containers/CategoriesNav';
 import usePrepareLink from '../hooks/usePrepareLink';
 
 export const PageHeader: React.FC = () => {
   const inAddiction = useSelector(
-    (state: RootState) => state.timers.inAddiction
+    (state: RootState) => state.timers.inAddiction,
   );
 
   const dispatch = useDispatch();
   const history = useHistory();
-  const locate = useLocation();
+  // const locate = useLocation();
 
   // @ts-ignore
   const settingsLink = usePrepareLink({
@@ -35,6 +35,7 @@ export const PageHeader: React.FC = () => {
   });
 
   return (
+    //TODO убрать getbyid !!!!! КИРИЛЛ
     <header id="#">
       <Container
         position="fixed"
@@ -44,6 +45,7 @@ export const PageHeader: React.FC = () => {
           backgroundColor: colors.$gray,
           zIndex: 11,
         }}
+        padding="0 18px"
         width="100%"
       >
         <Container
@@ -53,32 +55,21 @@ export const PageHeader: React.FC = () => {
           margin="0 auto"
           height="100%"
         >
-          <Container
-            style={{
-              flexBasis: '33.3333%',
-              textAlign: 'left',
-            }}
-          >
-            <Image
-              src={logo}
-              width="300px"
-              onClick={() => {
-                scrollToElement('#');
-                console.log('click');
-              }}
-              cursor="pointer"
-            />
-          </Container>
+          <CategoriesNav />
           <Container
             style={{
               flexBasis: '33.3333%',
               alignItems: 'center',
               display: 'flex',
               flexDirection: 'row',
-              justifyContent: 'space-between',
+              justifyContent: 'center',
             }}
           >
-            <Title fz="36px">Сейчас я пью</Title>
+            <Container margin="0 24px 0 0">
+              <Title fz="36px" ff="Alegreya Sans" fw="500">
+                Сейчас я пью
+              </Title>
+            </Container>
             <Container>
               <SwitchButton
                 position={inAddiction}

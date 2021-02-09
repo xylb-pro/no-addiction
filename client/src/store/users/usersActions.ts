@@ -29,7 +29,7 @@ export const userLanguageChange = (payload: IUsersState): UserActionsType => {
 };
 
 export const userSetLoader = (
-  payload: UsersStateLoadingArgumentType
+  payload: UsersStateLoadingArgumentType,
 ): AsyncActionType => {
   return (dispatch, getState) => {
     dispatch({
@@ -48,7 +48,7 @@ export const userSetLoader = (
 export const registerWithEmail = (
   username: string = '',
   email: string = '',
-  password: string = ''
+  password: string = '',
 ): AsyncActionType => {
   return async (dispatch) => {
     try {
@@ -70,7 +70,7 @@ export const registerWithEmail = (
 
 export const loginWithEmail = (
   usernameOrEmail: string,
-  password: string
+  password: string,
 ): AsyncActionType => {
   return async (dispatch) => {
     try {
@@ -91,20 +91,20 @@ export const loginWithEmail = (
 
 export const changeUserPassword = (
   oldPassword: string,
-  newPassword: string
+  newPassword: string,
 ): AsyncActionType => {
   return async (dispatch, getState) => {
     try {
-      const res = await requestHTTP(
+      await requestHTTP(
         `${backEndLink}/api/users/updateUserPassword`,
         'PUT',
         getState().users.token,
         {
           oldPassword,
           newPassword,
-        }
+        },
       );
-      console.log(res);
+
       dispatch({
         type: CHANGE_USER_PASSWORD,
       });
@@ -120,7 +120,7 @@ export const authWithGoogle = (): AsyncActionType => {
       const res = await requestHTTP(
         `${backEndLink}/api/auth/google`,
         'GET',
-        ''
+        '',
       );
       localStorage.setItem('userData', JSON.stringify({ token: res.token }));
       dispatch({
@@ -161,7 +161,7 @@ export const fetchCurrentUserInfo = (): AsyncActionType => {
       const res = await requestHTTP(
         `${backEndLink}/api/users/currentUser`,
         'GET',
-        getState().users.token
+        getState().users.token,
       );
 
       dispatch({
@@ -179,7 +179,7 @@ export const fetchCategories = (): AsyncActionType => {
     const categories = await requestHTTP(
       `${backEndLink}/api/categories?isOn=true`,
       'GET',
-      getState().users.token
+      getState().users.token,
     );
 
     dispatch({
@@ -204,7 +204,7 @@ export const fetchUpdateIsOnCategory = (id: number): AsyncActionType => {
           `${backEndLink}/api/categories/update`,
           'POST',
           getState().users.token,
-          { category: categories.find((category) => category.id === id) }
+          { category: categories.find((category) => category.id === id) },
         );
 
         dispatch({
