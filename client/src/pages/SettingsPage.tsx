@@ -15,11 +15,13 @@ import { selectUserOnlyCurrentCategories } from '../store/users/usersReducer';
 
 export const SettingsPage: React.FC = () => {
   const dispatch = useDispatch();
+
   const categories = useSelector((state: RootState) => state.users.categories);
+
   const realCurrentCategories = useSelector((state: RootState) =>
-    selectUserOnlyCurrentCategories(state),
+    selectUserOnlyCurrentCategories(state)
   );
-  console.log(realCurrentCategories);
+
   return (
     <Container maxWidth="470px">
       <SettingsHeader />

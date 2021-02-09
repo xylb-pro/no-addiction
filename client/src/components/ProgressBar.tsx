@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { globalPasswordStrong } from '../constants/validationConst';
 import { colors } from '../styles/colors';
 
 //TODO сделать нормальную валидацию (Кирилл)
@@ -6,21 +7,28 @@ import { colors } from '../styles/colors';
 interface IProgressBar {
   fill: number;
   maxFill?: number;
+  passwordLength?: number;
 }
 
 export const ProgressBar: React.FC<IProgressBar> = ({
   fill,
+  passwordLength = 100,
   maxFill = 100,
 }) => {
   const perc = () => {
     let currentColor = colors.$red;
     fill = (fill / maxFill) * 100;
-    if (fill > 30) currentColor = colors.$orange;
-    if (fill > 50) currentColor = colors.$yellow;
-    if (fill > 65) currentColor = colors.$green;
-    if (fill > 80) currentColor = colors.$blue;
+    if (fill > globalPasswordStrong.bad && passwordLength > 5)
+      currentColor = colors.$orange;
+    if (fill > globalPasswordStrong.normal && passwordLength > 13)
+      currentColor = colors.$yellow;
+    if (fill > globalPasswordStrong.good && passwordLength > 18)
+      currentColor = colors.$green;
+    if (fill > globalPasswordStrong.veryGood && passwordLength > 25)
+      currentColor = colors.$blue;
     return { currentColor, fill };
   };
+
   return (
     <Bar>
       <BarFill
