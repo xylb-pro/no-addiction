@@ -1,61 +1,56 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import validator from 'validator';
 
 import { useDispatch } from 'react-redux';
 import { loginWithEmail } from '../store/users/usersActions';
 
-import { Button } from '../components/Button';
+import { Link } from 'react-router-dom';
 import { Image } from '../components/Image';
-import GoogleIcon from '../assets/GoogleIcon.png';
-import { Input } from '../components/Input';
-import { Container } from '../components/Container';
 import { Title } from '../components/Title';
+import { Input } from '../components/Input';
+import { Button } from '../components/Button';
+import GoogleIcon from '../assets/GoogleIcon.png';
+import { Container } from '../components/Container';
 import { VisibilityOn } from '../assets/VisibilityOn';
 import { VisibilityOff } from '../assets/VisibilityOff';
-import { loginOptions } from '../constants/validationConst';
-import { Link } from 'react-router-dom';
+import { useInputValidation } from '../hooks/useInputValidation.hook';
 
 interface IForm {
-  loginAuth: string;
-  passwordAuth: string;
-}
-interface IInputValidation {
-  loginAuth?: boolean;
-  passwordAuth?: boolean;
+  authLogin: string;
+  authPassword: string;
 }
 
 export const LoginPage: React.FC = () => {
   const dispatch = useDispatch();
-
-  const [form, setForm] = useState<IForm>({
-    loginAuth: '',
-    passwordAuth: '',
-  });
-  const [inputValidation, setInputValidation] = useState<IInputValidation>({
-    loginAuth: true,
-    passwordAuth: true,
-  });
   const [visible, setVisible] = useState<boolean>(false);
 
-  const validationCheck = (e: any) => {
-    setInputValidation({
-      loginAuth: validator.isLength(form.loginAuth, loginOptions),
-      passwordAuth: validator.isLength(form.passwordAuth, { min: 6 }),
-    });
-  };
+  const [form, setForm] = useState<IForm>({
+    authLogin: '',
+    authPassword: '',
+  });
+
+  const [isValidLogin] = useInputValidation(form.authLogin, 'login');
+  const [isValidPassword] = useInputValidation(form.authPassword, 'password');
+
+  const [isValidLoginOnSubmit, setIVLOS] = useState<boolean>(true);
+  const [isValidPasswordOnSubmit, setIVPOS] = useState<boolean>(true);
 
   const submitLoginForm = (e: any) => {
     e.preventDefault();
-
-    if (inputValidation.loginAuth && inputValidation.passwordAuth) {
-      dispatch(loginWithEmail(form.loginAuth, form.passwordAuth));
-      setForm({ loginAuth: '', passwordAuth: '' });
-    }
+    let valid = 0;
+    if (isValidLogin) {
+      valid++;
+    } else setIVLOS(false);
+    if (isValidPassword) {
+      valid++;
+    } else setIVPOS(false);
+    if (valid === 2) {
+      dispatch(loginWithEmail(form.authLogin, form.authPassword));
+      setForm({ authLogin: '', authPassword: '' });
+    } // else login and pass not valid
   };
 
   const changeHandler = (event: any) => {
-    setInputValidation({ ...inputValidation, [event.target.name]: true });
     setForm({ ...form, [event.target.name]: event.target.value });
   };
 
@@ -93,11 +88,11 @@ export const LoginPage: React.FC = () => {
               <Input
                 placeholder="E-Mail or Login"
                 type="text"
-                name="loginAuth"
+                name="authLogin"
                 onChange={(e) => changeHandler(e)}
-                value={form.loginAuth}
-                valid={inputValidation.loginAuth}
-                id="loginAuth"
+                value={form.authLogin}
+                valid={isValidLoginOnSubmit || isValidLogin}
+                id="authLogin"
               >
                 Минимальная длина логина/почты 5 символов
               </Input>
@@ -111,14 +106,14 @@ export const LoginPage: React.FC = () => {
               <Input
                 placeholder="Password"
                 type={visible ? 'text' : 'password'}
-                name="passwordAuth"
+                name="authPassword"
                 onChange={(e) => changeHandler(e)}
-                value={form.passwordAuth}
+                value={form.authPassword}
                 style={{ paddingRight: '36px' }}
-                valid={inputValidation.passwordAuth}
-                id="passwordAuth"
+                valid={isValidPasswordOnSubmit || isValidPassword}
+                id="authPassword"
               >
-                Минимальная длина пароля 5 символов
+                Минимальная длина пароля 6 символов
               </Input>
               <Container
                 width="22px"
@@ -134,14 +129,7 @@ export const LoginPage: React.FC = () => {
               </Container>
             </Container>
             <Container pos="center">
-              <Button
-                styleType="extraSmallText"
-                onClick={(e) => {
-                  validationCheck(e);
-                }}
-                type="submit"
-                form="loginForm"
-              >
+              <Button styleType="extraSmallText" type="submit" form="loginForm">
                 Авторизоваться
               </Button>
             </Container>

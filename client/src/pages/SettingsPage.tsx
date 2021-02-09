@@ -14,6 +14,7 @@ import { RootState } from '../store/rootReducer';
 
 export const SettingsPage: React.FC = () => {
   const dispatch = useDispatch();
+
   const categories = useSelector((state: RootState) => state.users.categories);
 
   return (
