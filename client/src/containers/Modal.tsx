@@ -20,11 +20,11 @@ export const Modal: React.FC<ModalType> = ({
     <>
       {isOpened && (
         <ModalWrapper
-          onClick={() => setIsOpened()}
+          onMouseDown={() => setIsOpened()}
           backdrop={isOpened ? 'blur(15px)' : 'blur(0px)'}
         >
           <ModalContent
-            onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
             width={maxWidth}
             padding={padding}
           >

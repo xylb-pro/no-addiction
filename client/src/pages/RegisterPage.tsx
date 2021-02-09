@@ -2,22 +2,22 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import styled from 'styled-components';
-import validator from 'validator';
 
 import { registerWithEmail, authWithGoogle } from '../store/users/usersActions';
 import { useDispatch } from 'react-redux';
 
-import { Button } from '../components/Button';
 import { Image } from '../components/Image';
-import GoogleIcon from '../assets/GoogleIcon.png';
 import { Input } from '../components/Input';
-import { Container } from '../components/Container';
 import { Title } from '../components/Title';
+import { Button } from '../components/Button';
+import GoogleIcon from '../assets/GoogleIcon.png';
+import { Container } from '../components/Container';
 import { VisibilityOn } from '../assets/VisibilityOn';
 import { VisibilityOff } from '../assets/VisibilityOff';
-import { loginOptions, passwordOptions } from '../constants/validationConst';
 import { ProgressBar } from '../components/ProgressBar';
 import { googleLoginUrl } from '../constants/queryGoogleAuth';
+import { useInputValidation } from '../hooks/useInputValidation.hook';
+import { usePasswordValidation } from '../hooks/usePasswordValidation.hook';
 
 interface IForm {
   email: string;
@@ -25,66 +25,45 @@ interface IForm {
   password: string;
 }
 
-interface IInputValidation {
-  email: boolean;
-  login: boolean;
-  password: number;
-}
-
 export const RegisterPage: React.FC = () => {
+  const [visible, setVisible] = useState<boolean>(false);
+  const dispatch = useDispatch();
+
   const [form, setForm] = useState<IForm>({
     email: '',
     login: '',
     password: '',
   });
 
-  const [inputValidation, setInputValidation] = useState<IInputValidation>({
-    email: true,
-    login: true,
-    password: 20,
-  });
+  const [isValidLogin] = useInputValidation(form.login, 'login');
+  const [isValidEmail] = useInputValidation(form.email, 'email');
+  const [isValidPassword, passwordStrong] = usePasswordValidation(
+    form.password
+  );
 
-  const [passStrong, setPassStrong] = useState<number>(0);
-
-  const [visible, setVisible] = useState<boolean>(false);
-
-  const dispatch = useDispatch();
-
-  const validationCheck = (e: any) => {
-    setInputValidation({
-      email: validator.isEmail(form.email),
-      login: validator.isLength(form.login, loginOptions),
-      //@ts-ignore
-      password: validator.isStrongPassword(form.password, {
-        ...passwordOptions,
-        returnScore: true,
-      }),
-    });
-  };
+  const [isValidEmailOnSubmit, setIVEOS] = useState<boolean>(true);
+  const [isValidLoginOnSubmit, setIVLOS] = useState<boolean>(true);
+  const [isValidPaswordOnSubmit, setIVPOS] = useState<boolean>(true);
 
   const submitRegistrationForm = (e: any) => {
     e.preventDefault();
-    if (
-      inputValidation.email &&
-      inputValidation.password > 15 &&
-      inputValidation.login
-    ) {
+    let valid = 0;
+    if (isValidLogin) {
+      valid++;
+    } else setIVLOS(false);
+    if (isValidPassword) {
+      valid++;
+    } else setIVPOS(false);
+    if (isValidEmail) {
+      valid++;
+    } else setIVEOS(false);
+    if (valid === 3) {
       dispatch(registerWithEmail(form.login, form.email, form.password));
       setForm({ login: '', password: '', email: '' });
-    }
+    } // else login and pass not valid
   };
 
   const changeHandler = (event: any) => {
-    if (event.target.name === 'password') {
-      //@ts-ignore
-      let strong: number = validator.isStrongPassword(event.target.value, {
-        ...passwordOptions,
-        returnScore: true,
-      });
-      setInputValidation({ ...inputValidation, password: strong });
-      setPassStrong(strong);
-    } else
-      setInputValidation({ ...inputValidation, [event.target.name]: true });
     setForm({ ...form, [event.target.name]: event.target.value });
   };
 
@@ -136,7 +115,7 @@ export const RegisterPage: React.FC = () => {
                 name="email"
                 onChange={(e) => changeHandler(e)}
                 value={form.email}
-                valid={inputValidation.email}
+                valid={isValidEmailOnSubmit || isValidEmail}
                 id="email"
                 readOnly
                 onFocus={(e) => {
@@ -158,7 +137,7 @@ export const RegisterPage: React.FC = () => {
                 name="login"
                 onChange={(e) => changeHandler(e)}
                 value={form.login}
-                valid={inputValidation.login}
+                valid={isValidLoginOnSubmit || isValidLogin}
                 id="login"
               >
                 Логин должен содержать не менее 5 символов
@@ -176,7 +155,7 @@ export const RegisterPage: React.FC = () => {
                 name="password"
                 onChange={(e) => changeHandler(e)}
                 value={form.password}
-                valid={inputValidation.password > 15 ? true : false}
+                valid={isValidPassword || isValidPaswordOnSubmit}
                 style={{ paddingRight: '36px' }}
                 id="password"
                 autoComplete="new-password"
@@ -199,15 +178,15 @@ export const RegisterPage: React.FC = () => {
               </Container>
             </Container>
             <Container maxWidth="360px" margin="0px auto 30px">
-              <ProgressBar fill={passStrong} maxFill={50} />
+              <ProgressBar
+                fill={passwordStrong}
+                passwordLength={form.password.length}
+              />
             </Container>
 
             <Container pos="center">
               <Button
                 styleType="extraSmallText"
-                onClick={(e) => {
-                  validationCheck(e);
-                }}
                 form="registrationForm"
                 type="submit"
               >

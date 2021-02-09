@@ -7,7 +7,7 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "start-front": "cd ../client && npm run start",
-    "dev-all": "concurrently \"npm run dev\" \"npm run start-front\"" 
+    "dev-all": "concurrently \"npm run dev\" \"npm run start-front\""
   },
   "keywords": [
     "addiction",
