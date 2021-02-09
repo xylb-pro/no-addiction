@@ -16,10 +16,11 @@ class TimersController {
     const userId = req.user.userId;
     try {
       let timer = null;
+      const categoryId = req.query.categoryId;
       if (req.query.inAddiction) {
-        timer = await services.getInAddiction(userId);
+        timer = await services.getInAddiction(userId, categoryId);
       } else {
-        timer = await services.getCurrentTimer(userId);
+        timer = await services.getCurrentTimer(userId, categoryId);
       }
       res.json(timer);
     } catch (error) {

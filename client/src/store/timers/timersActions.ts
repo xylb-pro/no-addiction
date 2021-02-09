@@ -127,13 +127,16 @@ export const fetchDeleteTimer = (timerId: number): AsyncActionType => {
   };
 };
 
-// export const ifurrentTimerOneOfRecords = () => {};
-
+/**
+ * Function to get inAddiction status now
+ */
 export const getInAddiction = (): AsyncActionType => {
   return async (dispatch, getState) => {
     try {
       const res = await requestHTTP(
-        `${backEndLink}/api/timers/current?inAddiction=true`,
+        `${backEndLink}/api/timers/current?inAddiction=true&categoryId=${
+          getState().users.currentCategoryId
+        }`,
         'GET',
         getState().users.token,
       );
@@ -162,12 +165,17 @@ export const clearCurrentTimer = (): AsyncActionType => {
   };
 };
 
+/**
+ * Function to get current user timer from db if exists
+ */
 export const getCurrentTimer = (): AsyncActionType => {
   return async (dispatch, getState) => {
     try {
       const token = getState().users.token;
       const res = await requestHTTP(
-        `${backEndLink}/api/timers/current`,
+        `${backEndLink}/api/timers/current?categoryId=${
+          getState().users.currentCategoryId
+        }`,
         'GET',
         token,
       );

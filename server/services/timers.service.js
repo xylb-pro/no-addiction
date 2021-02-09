@@ -9,9 +9,9 @@ async function getAllTimers(userId) {
   }
 }
 
-async function getCurrentTimer(userId) {
+async function getCurrentTimer(userId, categoryId) {
   try {
-    const currentTimer = await db.getCurrentTimer(userId);
+    const currentTimer = await db.getCurrentTimer(userId, categoryId);
 
     if (currentTimer.rows.length === 0) {
       return { timerId: -1, beginDate: null, endDate: null };
@@ -29,9 +29,9 @@ async function getCurrentTimer(userId) {
   }
 }
 
-const getInAddiction = async (userId) => {
+const getInAddiction = async (userId, categoryId) => {
   try {
-    const timer = await db.getCurrentTimer(userId);
+    const timer = await db.getCurrentTimer(userId, categoryId);
     if (!timer.rows.length) {
       return { inAddiction: true };
     } else return { inAddiction: false };
