@@ -25,7 +25,6 @@ interface IInputValidation {
   passwordAuth?: boolean;
 }
 
-//TODO write comment to EVERY function (with types:D)
 export const LoginPage: React.FC = () => {
   const dispatch = useDispatch();
 

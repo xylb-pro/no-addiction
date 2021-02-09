@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/rootReducer';
@@ -25,6 +25,7 @@ export const PageHeader: React.FC = () => {
   );
 
   const dispatch = useDispatch();
+
   const history = useHistory();
   // const locate = useLocation();
 
