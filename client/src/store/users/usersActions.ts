@@ -15,6 +15,8 @@ import {
   FETCH_CATEGORIES,
   FETCH_UPDATE_IS_ON_CATEGORY,
   CHANGE_USER_PASSWORD,
+  CHANGE_CURRENT_CATEGORY_ID,
+  FETCH_UPDATE_CURRENT_CATEGORY_ID,
 } from './usersTypes';
 
 import { requestHTTP, backEndLink } from '../../functions/requestHTTP';
@@ -194,6 +196,7 @@ export const fetchUpdateIsOnCategory = (id: number): AsyncActionType => {
     const { categories } = getState().users;
     const onlyCurrentCategories = selectUserOnlyCurrentCategories(getState());
     try {
+      //user can't turn of last category
       if (
         !(
           onlyCurrentCategories.length === 1 &&
@@ -217,7 +220,100 @@ export const fetchUpdateIsOnCategory = (id: number): AsyncActionType => {
             }),
           },
         });
+
+        //change current categoryId and Fetch it
+        const newOnlyCurrentCategories = selectUserOnlyCurrentCategories(
+          getState(),
+        );
+        const lastCurrentCategoriesAllIndex = categories.findIndex(
+          (cat) => cat.id === onlyCurrentCategories[0].id,
+        );
+        const newCurrentCategoriesAllIndex = categories.findIndex(
+          (cat) => cat.id === newOnlyCurrentCategories[0].id,
+        );
+
+        if (
+          lastCurrentCategoriesAllIndex < newCurrentCategoriesAllIndex ||
+          id === getState().users.currentCategoryId
+        ) {
+          await dispatch(
+            changeCurrentCategoryId('no', newOnlyCurrentCategories[0].id),
+          );
+        }
+        //TODO проверить!!!!!! условие выше
       }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+/**
+ * Function to change current category id in store
+ * @param direction shows change category array direction
+ */
+export const changeCurrentCategoryId = (
+  direction?: 'left' | 'right' | 'no',
+  value?: number,
+): AsyncActionType => {
+  return async (dispatch, getState) => {
+    if (!value) {
+      const onlyCurrentCategories = selectUserOnlyCurrentCategories(getState());
+      let currentCategoryId = getState().users.currentCategoryId;
+
+      let currentCateegoryIndex: number = onlyCurrentCategories.findIndex(
+        (el) => el.id === currentCategoryId,
+      );
+
+      if (direction === 'left') {
+        currentCateegoryIndex === 0
+          ? (currentCateegoryIndex = onlyCurrentCategories.length - 1)
+          : currentCateegoryIndex--;
+      } else if (direction === 'right') {
+        currentCateegoryIndex === onlyCurrentCategories.length - 1
+          ? (currentCateegoryIndex = 0)
+          : currentCateegoryIndex++;
+      }
+
+      const currentCategory = onlyCurrentCategories.find(
+        (_, i) => i === currentCateegoryIndex,
+      );
+
+      if (currentCategory) {
+        await dispatch(fetchUpdateUserCategoryId(currentCategory.id));
+        dispatch({
+          type: CHANGE_CURRENT_CATEGORY_ID,
+          payload: { currentCategoryId: currentCategory.id },
+        });
+      }
+    } else {
+      await dispatch(fetchUpdateUserCategoryId(value));
+      dispatch({
+        type: CHANGE_CURRENT_CATEGORY_ID,
+        payload: { currentCategoryId: value },
+      });
+    }
+  };
+};
+
+/**
+ * Update current user category
+ */
+export const fetchUpdateUserCategoryId = (
+  categoryId: number,
+): AsyncActionType => {
+  return async (dispatch, getState) => {
+    const token = getState().users.token;
+    try {
+      await requestHTTP(
+        `${backEndLink}/api/users/updateCurrentCategory`,
+        'PUT',
+        token,
+        {
+          categoryId,
+        },
+      );
+      dispatch({ type: FETCH_UPDATE_CURRENT_CATEGORY_ID });
     } catch (error) {
       console.log(error);
     }

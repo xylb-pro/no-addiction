@@ -9,6 +9,9 @@ export const FETCH_CURRENT_USER_INFO = 'USER/FETCH_CURRENT_USER_INFO';
 export const FETCH_CATEGORIES = 'USER/FETCH_CATEGORIES';
 export const FETCH_UPDATE_IS_ON_CATEGORY = 'USER/FETCH_UPDATE_IS_ON_CATEGORY';
 export const CHANGE_USER_PASSWORD = 'USER/CHANGE_USER_PASSWORD';
+export const CHANGE_CURRENT_CATEGORY_ID = 'USER/CHANGE_CURRENT_CATEGORY_ID';
+export const FETCH_UPDATE_CURRENT_CATEGORY_ID =
+  'USER/FETCH_CHANGE_CURRENT_CATEGORY_ID';
 
 export interface IUsersStateLoading {
   main: boolean;
@@ -90,6 +93,15 @@ interface changeUserPassword {
   type: typeof CHANGE_USER_PASSWORD;
 }
 
+interface changeCurrentCategoryId {
+  type: typeof CHANGE_CURRENT_CATEGORY_ID;
+  payload: { currentCategoryId: number };
+}
+
+interface fetchChangeCurrentCategory {
+  type: typeof FETCH_UPDATE_CURRENT_CATEGORY_ID;
+}
+
 export type UserActionsType =
   | userLanguageChange
   | userSetLoader
@@ -101,4 +113,6 @@ export type UserActionsType =
   | fetchCategories
   | fetchUpdateIsOnCategory
   | registerWithEmail
+  | changeCurrentCategoryId
+  | fetchChangeCurrentCategory
   | changeUserPassword;

@@ -20,7 +20,6 @@ interface IForm {
   authPassword: string;
 }
 
-//TODO write comment to EVERY function (with types:D)
 export const LoginPage: React.FC = () => {
   const dispatch = useDispatch();
   const [visible, setVisible] = useState<boolean>(false);

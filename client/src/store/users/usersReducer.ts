@@ -14,6 +14,8 @@ import {
   FETCH_CATEGORIES,
   FETCH_UPDATE_IS_ON_CATEGORY,
   CHANGE_USER_PASSWORD,
+  CHANGE_CURRENT_CATEGORY_ID,
+  FETCH_UPDATE_CURRENT_CATEGORY_ID,
 } from './usersTypes';
 
 const initialState: IUsersState = {
@@ -33,7 +35,7 @@ const initialState: IUsersState = {
 
 export const usersReducer = (
   state: IUsersState = initialState,
-  action: UserActionsType
+  action: UserActionsType,
 ): IUsersState => {
   switch (action.type) {
     case USER_LANGUAGE_CHANGE:
@@ -56,6 +58,10 @@ export const usersReducer = (
       return { ...state, ...action.payload };
     case FETCH_UPDATE_IS_ON_CATEGORY:
       return { ...state, ...action.payload };
+    case CHANGE_CURRENT_CATEGORY_ID:
+      return { ...state, ...action.payload };
+    case FETCH_UPDATE_CURRENT_CATEGORY_ID:
+      return { ...state };
     case CHANGE_USER_PASSWORD:
       return { ...state };
     default:
