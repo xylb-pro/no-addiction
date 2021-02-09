@@ -1,6 +1,10 @@
 import { selectUserOnlyCurrentCategories } from './usersReducer';
 
-import { fetchRecordsList } from '../timers/timersActions';
+import {
+  fetchRecordsList,
+  getCurrentTimer,
+  getInAddiction,
+} from '../timers/timersActions';
 
 import {
   FETCH_REGISTER_EMAIL,
@@ -297,7 +301,10 @@ export const changeCurrentCategoryId = (
     }
 
     //fetch new records list
+    //fetch current timers
     await dispatch(fetchRecordsList());
+    await dispatch(getCurrentTimer());
+    await dispatch(getInAddiction());
   };
 };
 

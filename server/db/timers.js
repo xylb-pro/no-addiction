@@ -13,12 +13,12 @@ const getAllTimers = async (userId) => {
   return query;
 };
 
-const getCurrentTimer = async (userId) => {
+const getCurrentTimer = async (userId, categoryId) => {
   const query = await connectDb.query(
     `SELECT timers._id, timers.begin_date,
-  timers.end_date FROM "NoAddiction".timers WHERE timers.end_date ISNULL AND timers.user_id = $1
+  timers.end_date FROM "NoAddiction".timers WHERE timers.end_date ISNULL AND timers.user_id = $1 AND timers.category_id = $2
   ORDER BY timers.begin_date DESC`,
-    [userId],
+    [userId, categoryId],
   );
 
   return query;
