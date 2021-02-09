@@ -70,6 +70,11 @@ export const usersReducer = (
 };
 
 //get only current user categories
-export const selectUserOnlyCurrentCategories = (state: RootState) => {
-  return state.users.categories.filter((category) => category.isOn);
-};
+export const selectUserOnlyCurrentCategories = (state: RootState) =>
+  state.users.categories.filter((category) => category.isOn);
+
+export const selectCurrentCategoryById = (state: RootState, id: number) =>
+  state.users.categories.find((category) => category.id === id) || {
+    id: -1,
+    name: 'Not found',
+  };

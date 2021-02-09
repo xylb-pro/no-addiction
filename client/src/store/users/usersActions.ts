@@ -275,17 +275,17 @@ export const changeCurrentCategoryId = (
           : currentCateegoryIndex++;
       }
 
-      const currentCategory = onlyCurrentCategories.find(
-        (_, i) => i === currentCateegoryIndex,
+      await dispatch(
+        fetchUpdateUserCategoryId(
+          onlyCurrentCategories[currentCateegoryIndex].id,
+        ),
       );
-
-      if (currentCategory) {
-        await dispatch(fetchUpdateUserCategoryId(currentCategory.id));
-        dispatch({
-          type: CHANGE_CURRENT_CATEGORY_ID,
-          payload: { currentCategoryId: currentCategory.id },
-        });
-      }
+      dispatch({
+        type: CHANGE_CURRENT_CATEGORY_ID,
+        payload: {
+          currentCategoryId: onlyCurrentCategories[currentCateegoryIndex].id,
+        },
+      });
     } else {
       await dispatch(fetchUpdateUserCategoryId(value));
       dispatch({
