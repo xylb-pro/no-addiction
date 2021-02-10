@@ -17,7 +17,12 @@ const {
   updateCurrentUserCategory,
   updateUserHashPassword,
 } = require('./users');
-const { getAllQuotes, getAllBadOrNotQuotes } = require('./quotes');
+const {
+  getAllQuotes,
+  getAllBadOrNotQuotes,
+  getOneRandomQuote,
+  getAvailableCategoriesIds,
+} = require('./quotes');
 const {
   getCurrentCategoriesById,
   getAllCategories,
@@ -39,6 +44,7 @@ module.exports = {
   getRecordsListWithDuration,
   getUserById,
   deleteTimerById,
+  getOneRandomQuote,
   createNewUser,
   getUserByEmail,
   getUserByUsername,
@@ -47,4 +53,5 @@ module.exports = {
   getCurrentCategoriesById,
   getAllCategories,
   updateUserHashPassword,
+  getAvailableCategoriesIds,
 };

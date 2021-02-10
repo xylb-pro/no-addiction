@@ -51,9 +51,7 @@ export const initState = (): AsyncActionType => {
     } catch (error) {
       console.log(error);
     } finally {
-      setTimeout(() => {
-        dispatch(userSetLoader({ main: false, headerSwitcher: false }));
-      }, 1000);
+      dispatch(userSetLoader({ main: false, headerSwitcher: false }));
     }
   };
 };
@@ -242,7 +240,9 @@ export const getRandomBadQuote = (): AsyncActionType => {
   return async (dispatch, getState) => {
     try {
       const res = await requestHTTP(
-        `${backEndLink}/api/quotes?isbad=true`,
+        `${backEndLink}/api/quotes?isbad=true&categoryId=${
+          getState().users.currentCategoryId
+        }`,
         'GET',
         getState().users.token,
       );
@@ -258,7 +258,9 @@ export const getRandomGoodQuote = (): AsyncActionType => {
   return async (dispatch, getState) => {
     try {
       const res = await requestHTTP(
-        `${backEndLink}/api/quotes?isbad=false`,
+        `${backEndLink}/api/quotes?isbad=false&categoryId=${
+          getState().users.currentCategoryId
+        }`,
         'GET',
         getState().users.token,
       );

@@ -2,11 +2,20 @@ const services = require('../services');
 
 class QuotesController {
   async getQuotes(req, res) {
+    const isBad = req.query.isbad;
+    const categoryId = req.query.categoryId;
+    let quotes;
+
     try {
-      const isBad = req.query.isbad;
-      let quotes;
-      if (isBad !== undefined) {
-        quotes = await services.getAllBadOrNotQuotes(isBad);
+      if (isBad) {
+        if (!categoryId) {
+          quotes = await services.getOneRundomQuote(isBad);
+        } else {
+          quotes = await services.getOneBadOrNotQuoteWithCategory(
+            isBad,
+            categoryId,
+          );
+        }
       } else {
         quotes = await services.getAllQuotes();
       }

@@ -18,7 +18,11 @@ const {
   getUserHashPassword,
   updateUserHashPassword,
 } = require('./users.service');
-const { getAllQuotes, getAllBadOrNotQuotes } = require('./quotes.service');
+const {
+  getAllQuotes,
+  getOneBadOrNotQuoteWithCategory,
+  getOneRundomQuote,
+} = require('./quotes.service');
 const {
   getCategoriesWithCurrent,
   getAllCategories,
@@ -32,9 +36,10 @@ module.exports = {
   getCurrentTimer,
   addCurrentCategory,
   deleteCurrentCategory,
+  getOneRundomQuote,
   getLastTimer,
   getAllQuotes,
-  getAllBadOrNotQuotes,
+  getOneBadOrNotQuoteWithCategory,
   getInAddiction,
   updateCurrentTimerEndDate,
   createNewCurrentDate,

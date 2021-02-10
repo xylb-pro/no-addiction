@@ -10,14 +10,39 @@ const getAllQuotes = async () => {
   }
 };
 
-async function getAllBadOrNotQuotes(isBad) {
+/**
+ * Get one category isBad or not by category
+ * If db does not exists this category qoutes return rundom quote
+ * @param {Number} isBad
+ * @param {Number} categoryId
+ */
+async function getOneBadOrNotQuoteWithCategory(isBad, categoryId) {
   try {
-    const quotes = await db.getAllBadOrNotQuotes(isBad);
+    let quotes = await db.getAllBadOrNotQuotes(isBad, categoryId);
+    if (!quotes.rows.length) quotes = await db.getOneRandomQuote(isBad);
 
     return quotes.rows[0];
   } catch (error) {
-    throw new Error(`Error with get all isBad=${isBad} quotes`);
+    console.log(error);
+    throw new Error(
+      `Error with get isBad=${isBad} quote, Category: ${categoryId}`,
+    );
   }
 }
 
-module.exports = { getAllQuotes, getAllBadOrNotQuotes };
+async function getOneRundomQuote(isBad) {
+  try {
+    const quotes = await db.getOneRandomQuote(isBad);
+
+    return quotes.rows[0];
+  } catch (error) {
+    console.log(error);
+    throw new Error(`Error with get isBad=${isBad} quote`);
+  }
+}
+
+module.exports = {
+  getAllQuotes,
+  getOneBadOrNotQuoteWithCategory,
+  getOneRundomQuote,
+};

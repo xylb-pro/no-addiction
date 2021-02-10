@@ -33,7 +33,7 @@ export const OutAddiction: React.FC = () => {
       <Container margin="0 auto" pos="center">
         {/* <Button onClick={() => dispatch(clearCurrentTimer())} styleType="main"> */}
         <Button onClick={() => setIsOpened(true)} styleType="main">
-          выпил
+          i fucked up
         </Button>
       </Container>
       <Quote marginTop="60px" />

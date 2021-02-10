@@ -4,6 +4,8 @@ import {
   fetchRecordsList,
   getCurrentTimer,
   getInAddiction,
+  getRandomGoodQuote,
+  getRandomBadQuote,
 } from '../timers/timersActions';
 
 import {
@@ -263,48 +265,61 @@ export const changeCurrentCategoryId = (
   value?: number,
 ): AsyncActionType => {
   return async (dispatch, getState) => {
-    if (!value) {
-      const onlyCurrentCategories = selectUserOnlyCurrentCategories(getState());
-      let currentCategoryId = getState().users.currentCategoryId;
+    try {
+      dispatch(userSetLoader({ main: true, headerSwitcher: true }));
+      if (!value) {
+        const onlyCurrentCategories = selectUserOnlyCurrentCategories(
+          getState(),
+        );
+        let currentCategoryId = getState().users.currentCategoryId;
 
-      let currentCateegoryIndex: number = onlyCurrentCategories.findIndex(
-        (el) => el.id === currentCategoryId,
-      );
+        let currentCateegoryIndex: number = onlyCurrentCategories.findIndex(
+          (el) => el.id === currentCategoryId,
+        );
 
-      if (direction === 'left') {
-        currentCateegoryIndex === 0
-          ? (currentCateegoryIndex = onlyCurrentCategories.length - 1)
-          : currentCateegoryIndex--;
-      } else if (direction === 'right') {
-        currentCateegoryIndex === onlyCurrentCategories.length - 1
-          ? (currentCateegoryIndex = 0)
-          : currentCateegoryIndex++;
+        if (direction === 'left') {
+          currentCateegoryIndex === 0
+            ? (currentCateegoryIndex = onlyCurrentCategories.length - 1)
+            : currentCateegoryIndex--;
+        } else if (direction === 'right') {
+          currentCateegoryIndex === onlyCurrentCategories.length - 1
+            ? (currentCateegoryIndex = 0)
+            : currentCateegoryIndex++;
+        }
+
+        await dispatch(
+          fetchUpdateUserCategoryId(
+            onlyCurrentCategories[currentCateegoryIndex].id,
+          ),
+        );
+        dispatch({
+          type: CHANGE_CURRENT_CATEGORY_ID,
+          payload: {
+            currentCategoryId: onlyCurrentCategories[currentCateegoryIndex].id,
+          },
+        });
+      } else {
+        await dispatch(fetchUpdateUserCategoryId(value));
+        dispatch({
+          type: CHANGE_CURRENT_CATEGORY_ID,
+          payload: { currentCategoryId: value },
+        });
       }
 
-      await dispatch(
-        fetchUpdateUserCategoryId(
-          onlyCurrentCategories[currentCateegoryIndex].id,
-        ),
-      );
-      dispatch({
-        type: CHANGE_CURRENT_CATEGORY_ID,
-        payload: {
-          currentCategoryId: onlyCurrentCategories[currentCateegoryIndex].id,
-        },
-      });
-    } else {
-      await dispatch(fetchUpdateUserCategoryId(value));
-      dispatch({
-        type: CHANGE_CURRENT_CATEGORY_ID,
-        payload: { currentCategoryId: value },
-      });
-    }
+      //fetch new records list
+      //fetch current timers
+      await dispatch(getCurrentTimer());
+      await dispatch(getInAddiction());
+      await dispatch(fetchRecordsList());
 
-    //fetch new records list
-    //fetch current timers
-    await dispatch(fetchRecordsList());
-    await dispatch(getCurrentTimer());
-    await dispatch(getInAddiction());
+      getState().timers.inAddiction
+        ? await dispatch(getRandomBadQuote())
+        : await dispatch(getRandomGoodQuote());
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(userSetLoader({ main: false, headerSwitcher: false }));
+    }
   };
 };
 

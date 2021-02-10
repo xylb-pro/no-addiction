@@ -18,10 +18,15 @@ import { Modal } from './Modal';
 import { SettingsPage } from '../pages/SettingsPage';
 import { CategoriesNav } from '../containers/CategoriesNav';
 import usePrepareLink from '../hooks/usePrepareLink';
+import { selectCurrentCategoryById } from '../store/users/usersReducer';
+import { SecondButton } from '../components/SecondButton';
 
 export const PageHeader: React.FC = () => {
   const inAddiction = useSelector(
-    (state: RootState) => state.timers.inAddiction
+    (state: RootState) => state.timers.inAddiction,
+  );
+  const currentCategory = useSelector((state: RootState) =>
+    selectCurrentCategoryById(state, state.users.currentCategoryId),
   );
 
   const dispatch = useDispatch();
@@ -67,8 +72,8 @@ export const PageHeader: React.FC = () => {
             }}
           >
             <Container margin="0 24px 0 0">
-              <Title fz="36px" ff="Alegreya Sans" fw="500">
-                Сейчас я пью
+              <Title fz="32px" ff="Alegreya Sans" fw="500">
+                Now I'm in {currentCategory.name}
               </Title>
             </Container>
             <Container>
@@ -89,15 +94,15 @@ export const PageHeader: React.FC = () => {
               justifyContent: 'flex-end',
             }}
           >
-            <Button
-              styleType="extraSmallText"
+            <SecondButton
+              design="normal"
               onClick={() => {
                 scrollToElement('records');
               }}
               style={{ margin: '0 40px 0 0 ' }}
             >
-              Leaderboard
-            </Button>
+              Records
+            </SecondButton>
             <Link to="/noAlco/settings">
               <Image src={profileIcon} width="70px" borderRadius="100%" />
             </Link>

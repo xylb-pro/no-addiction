@@ -23,7 +23,9 @@ export const Button: React.FC<ButtonType> = ({
   ...rest
 }) => {
   const setNewLines = (children: React.ReactNode): React.ReactNode => {
-    const line = String(children).trim();
+    let line = '';
+    if (children instanceof Array) line = children.join('').trim();
+
     const resArray: Array<JSX.Element> = [];
 
     line.split(' ').forEach((word, i) => {
