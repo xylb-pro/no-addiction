@@ -29,7 +29,7 @@ const getLastTimer = async (userId) => {
     `SELECT timers._id, begin_date, end_date, users.username, categories.name FROM "NoAddiction".timers
   JOIN "NoAddiction".users ON timers.user_id = users._id
   JOIN "NoAddiction".categories ON timers.category_id = categories._id
-where begin_date = (select max(begin_date) from "NoAddiction".timers) AND timers.user_id = $1
+where end_date = (select max(end_date) from "NoAddiction".timers) AND timers.user_id = $1
 `,
     [userId],
   );
@@ -105,10 +105,10 @@ const deleteTimerById = async (userId, id) => {
   return queryResult;
 };
 
-const getPreLastTimer = async (userId, categoryId) => {
+const getPreLastTimer = async (userId, categoryId, requestOffset) => {
   const queryResult = await connectDb.query(
-    'SELECT * FROM "NoAddiction"."timers" WHERE timers.user_id = $1 AND timers.category_id = $2 ORDER BY end_date DESC LIMIT 1 OFFSET 1',
-    [userId, categoryId],
+    'SELECT * FROM "NoAddiction"."timers" WHERE timers.user_id = $1 AND timers.category_id = $2 ORDER BY end_date DESC LIMIT 1 OFFSET $3',
+    [userId, categoryId, requestOffset],
   );
 
   return queryResult;

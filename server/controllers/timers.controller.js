@@ -25,7 +25,12 @@ class TimersController {
 
       //get prelast timer by ?preLast=true
       if (req.query.preLast) {
-        timer = await services.getPreLastTimer(userId, categoryId);
+        const inAddiction = await services.getInAddiction(userId, categoryId);
+        if (inAddiction.inAddiction)
+          timer = await services.getPreLastTimer(userId, categoryId, 0);
+        else {
+          timer = await services.getPreLastTimer(userId, categoryId, 1);
+        }
       }
 
       res.json(timer);
@@ -36,8 +41,9 @@ class TimersController {
 
   async getLastTimer(req, res) {
     const userId = req.user.userId;
+    const categoryId = req.query.categoryId;
     try {
-      const timer = await services.getLastTimer(userId);
+      const timer = await services.getLastTimer(userId, categoryId);
       res.json(timer);
     } catch (error) {
       res.status(500).json({ message: String(error) });

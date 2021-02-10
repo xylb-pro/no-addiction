@@ -40,10 +40,10 @@ const getInAddiction = async (userId, categoryId) => {
   }
 };
 
-async function getLastTimer(userId) {
+async function getLastTimer(userId, catgoryId) {
   try {
-    const lastTimer = await db.getLastTimer(userId);
-    return lastTimer.rows;
+    const lastTimer = await db.getLastTimer(userId, catgoryId);
+    return lastTimer.rows[0];
   } catch (error) {
     throw new Error('Get last timer error');
   }
@@ -118,11 +118,9 @@ const deleteTimerById = async (userId, timerId) => {
  * @param {number} userId
  * @param {number} categoryId
  */
-const getPreLastTimer = async (userId, categoryId) => {
+const getPreLastTimer = async (userId, categoryId, requestOffset) => {
   try {
-    const timer = await db.getPreLastTimer(userId, categoryId);
-
-    console.log(timer.rows);
+    const timer = await db.getPreLastTimer(userId, categoryId, requestOffset);
 
     return timer.rows[0];
   } catch (error) {
