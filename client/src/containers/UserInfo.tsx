@@ -48,13 +48,14 @@ export const UserInfo: React.FC<HTMLAttributes<HTMLDivElement>> = ({
     'passwordOnReg'
   );
 
-  const [isValidOldPasswordOnSubmit, setIVNPOS] = useState<boolean>(true);
-  const [isValidNewPasswordOnSubmit, setIVOPOS] = useState<boolean>(true);
+  const [isValidOldPasswordOnSubmit, setIVOPOS] = useState<boolean>(true);
+  const [isValidNewPasswordOnSubmit, setIVNPOS] = useState<boolean>(true);
 
   const submitChangePasswordForm = (e: any) => {
     e.preventDefault();
     if (displayPasswordField) {
       let valid = 0;
+      console.log(`isValidNewPassword = ${isValidNewPassword}`);
       if (isValidOldPassword) {
         valid++;
       } else setIVOPOS(false);
@@ -73,6 +74,7 @@ export const UserInfo: React.FC<HTMLAttributes<HTMLDivElement>> = ({
 
   const changeHandler = (event: any) => {
     setForm({ ...form, [event.target.name]: event.target.value });
+    console.log(isValidNewPassword, form.newPassword);
   };
 
   const changeVisible = () => {
@@ -129,7 +131,6 @@ export const UserInfo: React.FC<HTMLAttributes<HTMLDivElement>> = ({
               value={form.oldPassword}
               valid={isValidOldPasswordOnSubmit || isValidOldPassword}
               style={{ paddingRight: '36px' }}
-              id="oldPassword"
               messageText={oldPasswordInvalidMsg}
             />
           </Container>
