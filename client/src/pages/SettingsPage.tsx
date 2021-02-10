@@ -11,11 +11,19 @@ import { colors } from '../styles/colors';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUpdateIsOnCategory } from '../store/users/usersActions';
 import { RootState } from '../store/rootReducer';
+import { ReturnLastTimer } from '../containers/ReturnLastTimer';
 
 export const SettingsPage: React.FC = () => {
   const dispatch = useDispatch();
 
-  const categories = useSelector((state: RootState) => state.users.categories);
+  //TODO важно! use selector!
+  // const categories = useSelector((state: RootState) => state.users.categories);
+  // const [currentCategory, categories] = useSelector((state: RootState) => {return [selectCurrentCategoryById(state, state.users.currentCategoryId), state.users.categories]})
+  const { categories } = useSelector((state: RootState) => {
+    return {
+      categories: state.users.categories,
+    };
+  });
 
   return (
     <Container maxWidth="470px">
@@ -44,15 +52,7 @@ export const SettingsPage: React.FC = () => {
         marginTop="28px"
         description="If you stopped you current timer you can get it back"
       >
-        <SecondButton design="normal">Return</SecondButton>
-        <Container style={{ textAlign: 'right' }}>
-          <Title ff="Alegreya Sans" fw="300">
-            In category Alcohol Begin date 2020:10:01 12:23
-          </Title>
-          <Title ff="Alegreya Sans" fw="300">
-            Stopped 2020:11:02 14:42
-          </Title>
-        </Container>
+        <ReturnLastTimer />
       </SettingsSection>
       <Container
         pos="space-between"

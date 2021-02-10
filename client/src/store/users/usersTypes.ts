@@ -25,7 +25,7 @@ export type UsersStateLoadingArgumentType = {
 };
 
 //categories with isOn type
-type categories = {
+export type categories = {
   id: number;
   name: string;
   isOn: boolean;
