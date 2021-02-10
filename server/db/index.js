@@ -6,6 +6,7 @@ const {
   createNewDate,
   getRecordsListWithDuration,
   deleteTimerById,
+  getPreLastTimer,
 } = require('./timers');
 const {
   getAllUsers,
@@ -54,4 +55,5 @@ module.exports = {
   getAllCategories,
   updateUserHashPassword,
   getAvailableCategoriesIds,
+  getPreLastTimer,
 };

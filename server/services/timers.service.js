@@ -113,6 +113,23 @@ const deleteTimerById = async (userId, timerId) => {
   }
 };
 
+/**
+ * Get pre last timer to return that value to db
+ * @param {number} userId
+ * @param {number} categoryId
+ */
+const getPreLastTimer = async (userId, categoryId) => {
+  try {
+    const timer = await db.getPreLastTimer(userId, categoryId);
+
+    console.log(timer.rows);
+
+    return timer.rows[0];
+  } catch (error) {
+    throw new Error(`Cant get pre last timer: ${timerId}`);
+  }
+};
+
 module.exports = {
   getAllTimers,
   getCurrentTimer,
@@ -122,4 +139,5 @@ module.exports = {
   createNewCurrentDate,
   getRecordsListWithDuration,
   deleteTimerById,
+  getPreLastTimer,
 };

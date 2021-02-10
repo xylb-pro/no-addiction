@@ -105,6 +105,15 @@ const deleteTimerById = async (userId, id) => {
   return queryResult;
 };
 
+const getPreLastTimer = async (userId, categoryId) => {
+  const queryResult = await connectDb.query(
+    'SELECT * FROM "NoAddiction"."timers" WHERE timers.user_id = $1 AND timers.category_id = $2 ORDER BY end_date DESC LIMIT 1 OFFSET 1',
+    [userId, categoryId],
+  );
+
+  return queryResult;
+};
+
 module.exports = {
   getAllTimers,
   getCurrentTimer,
@@ -113,4 +122,5 @@ module.exports = {
   createNewDate,
   getRecordsListWithDuration,
   deleteTimerById,
+  getPreLastTimer,
 };

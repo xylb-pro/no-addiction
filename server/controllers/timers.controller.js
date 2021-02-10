@@ -22,6 +22,12 @@ class TimersController {
       } else {
         timer = await services.getCurrentTimer(userId, categoryId);
       }
+
+      //get prelast timer by ?preLast=true
+      if (req.query.preLast) {
+        timer = await services.getPreLastTimer(userId, categoryId);
+      }
+
       res.json(timer);
     } catch (error) {
       res.status(500).json({ message: String(error) });

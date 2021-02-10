@@ -236,6 +236,13 @@ export const setInAddiction = (inAddiction: boolean): TimersActionType => {
   };
 };
 
+/**
+ * Fetch and set to store preCurrentTimer
+ */
+export const fetchPreCurrentTimer = (): AsyncActionType => {
+  return async (dispatch, useState) => {};
+};
+
 export const getRandomBadQuote = (): AsyncActionType => {
   return async (dispatch, getState) => {
     try {

@@ -7,6 +7,7 @@ const {
   createNewCurrentDate,
   getRecordsListWithDuration,
   deleteTimerById,
+  getPreLastTimer,
 } = require('./timers.service');
 const {
   getAllUsers,
@@ -46,6 +47,7 @@ module.exports = {
   getRecordsListWithDuration,
   deleteTimerById,
   getUserByEmailAndUsername,
+  getPreLastTimer,
   createNewUser,
   getUserByEmailOrUsername,
   getAllCategories,
