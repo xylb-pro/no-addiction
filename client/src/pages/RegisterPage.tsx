@@ -123,7 +123,6 @@ export const RegisterPage: React.FC = () => {
                 onChange={(e) => changeHandler(e)}
                 value={form.email}
                 valid={isValidEmailOnSubmit || isValidEmail}
-                id="email"
                 readOnly
                 onFocus={(e) => {
                   removeReadonly(e);
@@ -144,7 +143,6 @@ export const RegisterPage: React.FC = () => {
                 onChange={(e) => changeHandler(e)}
                 value={form.login}
                 valid={isValidLoginOnSubmit || isValidLogin}
-                id="login"
                 messageText={loginInvalidMsg}
               />
             </Container>
@@ -162,8 +160,6 @@ export const RegisterPage: React.FC = () => {
                 value={form.password}
                 valid={isValidPassword || isValidPaswordOnSubmit}
                 style={{ paddingRight: '36px' }}
-                id="password"
-                autoComplete="new-password"
                 messageText={passwordInvalidMsg}
               />
 

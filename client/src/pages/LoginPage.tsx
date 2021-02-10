@@ -100,7 +100,6 @@ export const LoginPage: React.FC = () => {
                 onChange={(e) => changeHandler(e)}
                 value={form.authLogin}
                 valid={isValidLoginOnSubmit || isValidLogin}
-                id="authLogin"
                 messageText={loginInvalidMsg}
               />
             </Container>
@@ -118,7 +117,6 @@ export const LoginPage: React.FC = () => {
                 value={form.authPassword}
                 style={{ paddingRight: '36px' }}
                 valid={isValidPasswordOnSubmit || isValidPassword}
-                id="authPassword"
                 messageText={passwordInvalidMsg}
               />
               <Container
