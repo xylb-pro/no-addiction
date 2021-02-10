@@ -8,6 +8,7 @@ interface ISecondButton extends ButtonHTMLAttributes<HTMLButtonElement> {
   design: designType;
   width?: string;
   padding?: string;
+  margin?: string;
   isOn?: boolean;
 }
 
@@ -18,6 +19,7 @@ export const SecondButton: React.FC<ISecondButton> = ({
   children,
   width,
   padding,
+  margin,
   isOn,
   ...rest
 }) => {
@@ -27,6 +29,7 @@ export const SecondButton: React.FC<ISecondButton> = ({
       style={{ ...styleType(design, !!isOn), ...rest.style }}
       width={width}
       padding={padding}
+      margin={margin}
     >
       {children}
     </StyledButton>
@@ -45,6 +48,7 @@ const styleType = (design: designType, isOn: boolean): React.CSSProperties => {
         return {
           backgroundColor: colors.$black,
           color: colors.$absolutlyWhite,
+          border: `1px solid ${colors.$black}`,
         };
       return {
         color: colors.$black,
@@ -60,7 +64,11 @@ const styleType = (design: designType, isOn: boolean): React.CSSProperties => {
   }
 };
 
-const StyledButton = styled.button<{ width?: string; padding?: string }>`
+const StyledButton = styled.button<{
+  width?: string;
+  padding?: string;
+  margin?: string;
+}>`
   width: ${(p) => p.width};
   cursor: pointer;
   user-select: none;
@@ -69,4 +77,8 @@ const StyledButton = styled.button<{ width?: string; padding?: string }>`
   padding: ${(p) => p.padding || '10px 15px'};
   border-radius: 18px;
   font-size: 18px;
+  margin: ${(p) => p.margin};
+  :last-child {
+    margin-right: 0;
+  }
 `;

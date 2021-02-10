@@ -31,6 +31,7 @@ export const SettingsPage: React.FC = () => {
             key={category.id}
             design="switcher"
             width="114px"
+            margin="0 16px 0 0"
             isOn={category.isOn}
             onClick={() => dispatch(fetchUpdateIsOnCategory(category.id))}
           >
