@@ -6,6 +6,7 @@ import {
   getInAddiction,
   getRandomGoodQuote,
   getRandomBadQuote,
+  fetchPreCurrentTimer,
 } from '../timers/timersActions';
 
 import {
@@ -309,6 +310,7 @@ export const changeCurrentCategoryId = (
       //fetch new records list
       //fetch current timers
       await dispatch(getCurrentTimer());
+      await dispatch(fetchPreCurrentTimer());
       await dispatch(getInAddiction());
       await dispatch(fetchRecordsList());
 

@@ -120,9 +120,14 @@ const deleteTimerById = async (userId, timerId) => {
  */
 const getPreLastTimer = async (userId, categoryId, requestOffset) => {
   try {
-    const timer = await db.getPreLastTimer(userId, categoryId, requestOffset);
-
-    return timer.rows[0];
+    let timer = await db.getPreLastTimer(userId, categoryId, requestOffset);
+    timer = timer.rows[0];
+    timer = {
+      id: timer._id,
+      beginDate: timer.begin_date,
+      endDate: timer.end_date,
+    };
+    return timer;
   } catch (error) {
     throw new Error(`Cant get pre last timer: ${timerId}`);
   }

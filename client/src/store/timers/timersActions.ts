@@ -26,6 +26,7 @@ import {
   FETCH_DELETE_TIMER,
   FETCH_RECORDS_LIST,
   SET_CURRENT_RECORD_INDEX,
+  FETCH_PRE_CURRENT_TIMER,
 } from './timersTypes';
 
 import { requestHTTP, backEndLink } from '../../functions/requestHTTP';
@@ -38,6 +39,7 @@ export const initState = (): AsyncActionType => {
 
       await dispatch(fetchCurrentUserInfo());
       await dispatch(getCurrentTimer());
+      await dispatch(fetchPreCurrentTimer());
       await dispatch(getInAddiction());
 
       await dispatch(fetchRecordsList());
@@ -156,6 +158,7 @@ export const clearCurrentTimer = (): AsyncActionType => {
 
       dispatch({ type: CLEAR_CURRENT_TIMER });
       await dispatch(getCurrentTimer());
+      await dispatch(fetchPreCurrentTimer());
       await dispatch(fetchRecordsList());
     } catch (error) {
       console.log(error);
@@ -215,15 +218,13 @@ export const inAddictionChange = (
         : await dispatch(getRandomGoodQuote());
 
       await dispatch(getCurrentTimer());
-
+      await dispatch(fetchPreCurrentTimer());
       await dispatch(fetchRecordsList());
     } catch (error) {
       console.log(error);
     } finally {
       if (getState().users.loading.component) {
-        await setTimeout(() => {
-          dispatch(userSetLoader({ component: false }));
-        }, 500);
+        dispatch(userSetLoader({ component: false }));
       }
     }
   };
@@ -240,7 +241,21 @@ export const setInAddiction = (inAddiction: boolean): TimersActionType => {
  * Fetch and set to store preCurrentTimer
  */
 export const fetchPreCurrentTimer = (): AsyncActionType => {
-  return async (dispatch, useState) => {};
+  return async (dispatch, getState) => {
+    try {
+      const preCurrentTimer = await requestHTTP(
+        `${backEndLink}/api/timers/current?preLast=true&categoryId=${
+          getState().users.currentCategoryId
+        }`,
+        'GET',
+        getState().users.token,
+      );
+
+      dispatch({ type: FETCH_PRE_CURRENT_TIMER, payload: preCurrentTimer });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 };
 
 export const getRandomBadQuote = (): AsyncActionType => {

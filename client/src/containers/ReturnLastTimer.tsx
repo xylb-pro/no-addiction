@@ -14,14 +14,18 @@ type ReturnLastTimerType = {
 };
 
 export const ReturnLastTimer: React.FC<ReturnLastTimerType> = () => {
-  const { currentCategory } = useSelector((state: RootState) => {
-    return {
-      currentCategory: selectCurrentCategoryById(
-        state,
-        state.users.currentCategoryId,
-      ),
-    };
-  });
+  const { currentCategory, preCurrentTimer } = useSelector(
+    (state: RootState) => {
+      return {
+        currentCategory: selectCurrentCategoryById(
+          state,
+          state.users.currentCategoryId,
+        ),
+        preCurrentTimer: state.timers.preCurrentTimer,
+      };
+    },
+  );
+
   return (
     <>
       <SecondButton design="normal">Return</SecondButton>
@@ -32,11 +36,15 @@ export const ReturnLastTimer: React.FC<ReturnLastTimerType> = () => {
             {currentCategory.name}
           </ImportantText>{' '}
           begin date:{' '}
-          <ImportantText color={colors.$black}>2020:10:01 12:23</ImportantText>
+          <ImportantText color={colors.$black}>
+            {preCurrentTimer.beginDate}
+          </ImportantText>
         </InfoText>
         <InfoText>
           Was stopped:{' '}
-          <ImportantText color={colors.$black}>2020:10:01 12:23</ImportantText>
+          <ImportantText color={colors.$black}>
+            {preCurrentTimer.endDate}
+          </ImportantText>
         </InfoText>
       </Container>
     </>
