@@ -14,24 +14,15 @@ export const OutAddiction: React.FC = () => {
   const dispatch = useDispatch();
   const [isOpened, setIsOpened] = useState<boolean>(false);
   return (
-    //TODO нужно как-то сократить код конфирма
     <>
-      <Modal
-        setIsOpened={() => setIsOpened(false)}
-        isOpened={isOpened}
-        padding="30px"
-      >
+      <Modal setIsOpened={() => setIsOpened(false)} isOpened={isOpened}>
         <ConfirmWindow
-          mainAction={() => {
-            dispatch(clearCurrentTimer());
-            setTimeout(() => setIsOpened(false), 200);
-          }}
-          secondAction={() => setIsOpened(false)}
+          mainAction={() => dispatch(clearCurrentTimer())}
+          modalCloseAction={() => setIsOpened(false)}
         />
       </Modal>
       <CountDown />
       <Container margin="0 auto" pos="center">
-        {/* <Button onClick={() => dispatch(clearCurrentTimer())} styleType="main"> */}
         <Button onClick={() => setIsOpened(true)} styleType="main">
           i fucked up
         </Button>

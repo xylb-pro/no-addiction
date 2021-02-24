@@ -27,6 +27,11 @@ export const SettingsPage: React.FC = () => {
 
   return (
     <Container maxWidth="470px">
+      <SwitchButton
+        switchButtonStyle="settings"
+        selectorPosition={false}
+        isElementLoading={false}
+      />
       <SettingsHeader />
       <UserInfo style={{ marginTop: '18px' }} />
       <SettingsSection
@@ -64,10 +69,16 @@ export const SettingsPage: React.FC = () => {
           title="Confirm window"
           style={{ margin: '28px 30px 0px 0px', maxWidth: '50%' }}
         >
-          <SwitchButton backgroundColor={colors.$purple} />
+          <SwitchButton
+            switchButtonStyle={'settings'}
+            selectorPosition={true}
+          />
         </SettingsSection>
         <SettingsSection title="Dark theme" marginTop="28px">
-          <SwitchButton backgroundColor={colors.$purple} />
+          <SwitchButton
+            switchButtonStyle={'settings'}
+            selectorPosition={true}
+          />
         </SettingsSection>
       </Container>
       <Title fz="32px" ff="Alegreya Sans" fw="500">

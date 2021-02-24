@@ -1,16 +1,17 @@
 import React from 'react';
+import { modalCloseDelay } from '../constants/globalConstants';
 import { Container } from './Container';
 import { SecondButton } from './SecondButton';
 import { Title } from './Title';
 
 interface IConfirmWindow {
   mainAction?(): void;
-  secondAction?(): void;
+  modalCloseAction?(): void;
 }
 
 export const ConfirmWindow: React.FC<IConfirmWindow> = ({
   mainAction = () => {},
-  secondAction = () => {},
+  modalCloseAction = () => {},
 }) => {
   return (
     <>
@@ -23,14 +24,23 @@ export const ConfirmWindow: React.FC<IConfirmWindow> = ({
         <SecondButton
           design="normal"
           padding="10px 20px"
-          onClick={() => secondAction()}
+          onClick={() => {
+            setTimeout(() => {
+              modalCloseAction();
+            }, modalCloseDelay);
+          }}
         >
           Cancel
         </SecondButton>
         <SecondButton
           design="negative"
           padding="10px 28px"
-          onClick={() => mainAction()}
+          onClick={() => {
+            setTimeout(() => {
+              mainAction();
+              modalCloseAction();
+            }, modalCloseDelay);
+          }}
         >
           Stop
         </SecondButton>
