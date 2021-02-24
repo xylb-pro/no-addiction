@@ -23,10 +23,10 @@ import { SecondButton } from '../components/SecondButton';
 
 export const PageHeader: React.FC = () => {
   const inAddiction = useSelector(
-    (state: RootState) => state.timers.inAddiction,
+    (state: RootState) => state.timers.inAddiction
   );
   const currentCategory = useSelector((state: RootState) =>
-    selectCurrentCategoryById(state, state.users.currentCategoryId),
+    selectCurrentCategoryById(state, state.users.currentCategoryId)
   );
 
   const dispatch = useDispatch();

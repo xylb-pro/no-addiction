@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { modalCloseDelay } from '../constants/globalConstants';
 
 type ModalType = {
   children: React.ReactNode;
@@ -20,7 +21,7 @@ export const Modal: React.FC<ModalType> = ({
     <>
       {isOpened && (
         <ModalWrapper
-          onMouseDown={() => setIsOpened()}
+          onMouseDown={() => setTimeout(() => setIsOpened(), modalCloseDelay)}
           backdrop={isOpened ? 'blur(15px)' : 'blur(0px)'}
         >
           <ModalContent
