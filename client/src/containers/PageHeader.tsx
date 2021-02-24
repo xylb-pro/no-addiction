@@ -29,6 +29,10 @@ export const PageHeader: React.FC = () => {
     selectCurrentCategoryById(state, state.users.currentCategoryId)
   );
 
+  const selectorLoading = useSelector(
+    (state: RootState) => state.users.loading.headerSwitcher
+  );
+
   const dispatch = useDispatch();
 
   const history = useHistory();
@@ -78,7 +82,9 @@ export const PageHeader: React.FC = () => {
             </Container>
             <Container>
               <SwitchButton
-                position={inAddiction}
+                switchButtonStyle="header"
+                isElementLoading={selectorLoading}
+                selectorPosition={inAddiction}
                 onClick={() => {
                   dispatch(inAddictionChange());
                 }}

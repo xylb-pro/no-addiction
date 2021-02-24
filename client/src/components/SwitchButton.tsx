@@ -1,79 +1,85 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-
 import styled from 'styled-components';
-import { RootState } from '../store/rootReducer';
 
 import { colors } from '../styles/colors';
 
-type TypeOfType = 'small' | 'medium' | 'large';
-
-interface ISwitchButton {
+type SwitchButtonType = {
   onClick?(): void;
-  type?: TypeOfType;
-  position?: boolean;
-  backgroundColor?: string;
-}
-type Position = {
-  backgroundColor?: string;
-  flexDirection?: string;
-  visibility?: string;
+  switchButtonStyle: SwitchButtonStyleType;
+  selectorPosition: boolean;
+  isElementLoading?: boolean;
 };
 
-export const SwitchButton: React.FC<ISwitchButton> = ({
+type SwitchButtonSelectorType = {
+  selectorPosition: boolean;
+  visibility: 'visible' | 'hidden';
+  backgroundColor?: string;
+};
+
+type SwitchButtonLayoutType = {
+  backgroundColor?: string;
+};
+
+type SwitchButtonStyleType = 'settings' | 'header';
+
+//TODO Add color change on change position. _xylb
+
+export const SwitchButton: React.FC<SwitchButtonType> = ({
   onClick = () => {},
-  type = 'small',
-  position,
-  backgroundColor,
+  switchButtonStyle = 'header',
+  selectorPosition,
+  isElementLoading = false,
 }) => {
-  const loading = useSelector(
-    (state: RootState) => state.users.loading.headerSwitcher
-  );
-
-  const getSwitchButtonPropStyles = (): { [key: string]: string } => {
-    if (position) {
-      return {
-        flexDirection: 'row-reverse',
-        backgroundColor: colors.$red,
-      };
-    } else
-      return {
-        flexDirection: 'row',
-        backgroundColor: colors.$gray,
-      };
-  };
-
   return (
-    <MainPart
-      flexDirection={getSwitchButtonPropStyles().flexDirection}
+    <SwitchButtonLayout
       onClick={() => onClick()}
-      backgroundColor={backgroundColor}
+      backgroundColor={
+        setSwitchButtonStyle(switchButtonStyle).backgroundColorLayout
+      }
     >
-      <Selector
-        backgroundColor={getSwitchButtonPropStyles().backgroundColor}
-        visibility={!loading ? 'visible' : 'hidden'}
-      ></Selector>
-    </MainPart>
+      <SwitchButtonSelector
+        selectorPosition={selectorPosition}
+        visibility={!isElementLoading ? 'visible' : 'hidden'}
+        backgroundColor={
+          setSwitchButtonStyle(switchButtonStyle).backgroundColorSelector
+        }
+      />
+    </SwitchButtonLayout>
   );
 };
 
-const MainPart = styled.button<Position>`
+const setSwitchButtonStyle = (switchButtonStyle: SwitchButtonStyleType) => {
+  switch (switchButtonStyle) {
+    case 'settings':
+      return {
+        backgroundColorLayout: colors.$purple,
+        backgroundColorSelector: colors.$white,
+      };
+    case 'header':
+      return {
+        backgroundColorLayout: colors.$white,
+        backgroundColorSelector: colors.$gray,
+      };
+  }
+};
+
+const SwitchButtonLayout = styled.div<SwitchButtonLayoutType>`
+  position: relative;
   width: 64px;
   height: 34px;
   border-radius: 25px;
-  background-color: ${(p) => p.backgroundColor || colors.$white};
   border: none;
-  display: flex;
-  align-items: center;
-  padding: 0;
-  flex-direction: ${(props) => props.flexDirection};
+  background-color: ${(p) => p.backgroundColor};
+  user-select: none;
 `;
 
-const Selector = styled.div<Position>`
-  height: 28px;
-  width: 28px;
+const SwitchButtonSelector = styled.div<SwitchButtonSelectorType>`
+  visibility: ${(p) => p.visibility};
+  position: absolute;
+  height: 26px;
+  width: 26px;
+  left: ${(p) => (p.selectorPosition ? '4px' : '34px' || '4px')};
+  top: 4px;
   border-radius: 100%;
-  background-color: ${(props) => props.backgroundColor};
-  margin: 0 3px;
-  visibility: ${(props) => props.visibility};
+  background-color: ${(p) => p.backgroundColor};
+  transition: left 0.15s ease;
 `;
