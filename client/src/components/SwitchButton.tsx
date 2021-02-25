@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { transitionDuration } from '../constants/globalConstants';
 
 import { colors } from '../styles/colors';
 
@@ -78,7 +79,7 @@ const SwitchButtonLayout = styled.div<SwitchButtonLayoutType>`
   border: none;
   background-color: ${(p) => p.backgroundColor};
   user-select: none;
-  transition: background-color 0.2s ease;
+  transition: background-color ${transitionDuration} ease;
 `;
 
 const SwitchButtonSelector = styled.div<SwitchButtonSelectorType>`
@@ -90,5 +91,5 @@ const SwitchButtonSelector = styled.div<SwitchButtonSelectorType>`
   top: 4px;
   border-radius: 100%;
   background-color: ${(p) => p.backgroundColor};
-  transition: left 0.15s ease;
+  transition: left ${transitionDuration} ease;
 `;

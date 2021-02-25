@@ -1,5 +1,6 @@
 import React, { ButtonHTMLAttributes } from 'react';
 import styled from 'styled-components';
+import { transitionDuration } from '../constants/globalConstants';
 import { colors } from '../styles/colors';
 
 type designType = 'normal' | 'negative' | 'switcher';
@@ -12,7 +13,11 @@ interface ISecondButton extends ButtonHTMLAttributes<HTMLButtonElement> {
   isOn?: boolean;
 }
 
-// interface IStyledButton {}
+type StyledButtonPropsType = {
+  width?: string;
+  padding?: string;
+  margin?: string;
+};
 
 export const SecondButton: React.FC<ISecondButton> = ({
   design,
@@ -64,11 +69,7 @@ const styleType = (design: designType, isOn: boolean): React.CSSProperties => {
   }
 };
 
-const StyledButton = styled.button<{
-  width?: string;
-  padding?: string;
-  margin?: string;
-}>`
+const StyledButton = styled.button<StyledButtonPropsType>`
   width: ${(p) => p.width};
   cursor: pointer;
   user-select: none;
@@ -81,4 +82,5 @@ const StyledButton = styled.button<{
   :last-child {
     margin-right: 0;
   }
+  transition: background-color ${transitionDuration} ease;
 `;
