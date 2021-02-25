@@ -33,7 +33,11 @@ export const SwitchButton: React.FC<SwitchButtonType> = ({
     <SwitchButtonLayout
       onClick={() => onClick()}
       backgroundColor={
-        setSwitchButtonStyle(switchButtonStyle).backgroundColorLayout
+        selectorPosition
+          ? setSwitchButtonStyle(switchButtonStyle).backgroundColorLayout
+              .enabled
+          : setSwitchButtonStyle(switchButtonStyle).backgroundColorLayout
+              .disabled
       }
     >
       <SwitchButtonSelector
@@ -51,13 +55,19 @@ const setSwitchButtonStyle = (switchButtonStyle: SwitchButtonStyleType) => {
   switch (switchButtonStyle) {
     case 'settings':
       return {
-        backgroundColorLayout: colors.$purple,
-        backgroundColorSelector: colors.$white,
+        backgroundColorLayout: {
+          disabled: colors.$gray,
+          enabled: colors.$purple,
+        },
+        backgroundColorSelector: colors.$absolutlyWhite,
       };
     case 'header':
       return {
-        backgroundColorLayout: colors.$white,
-        backgroundColorSelector: colors.$gray,
+        backgroundColorLayout: {
+          disabled: colors.$darkGray,
+          enabled: colors.$red,
+        },
+        backgroundColorSelector: colors.$white,
       };
   }
 };
@@ -70,6 +80,7 @@ const SwitchButtonLayout = styled.div<SwitchButtonLayoutType>`
   border: none;
   background-color: ${(p) => p.backgroundColor};
   user-select: none;
+  transition: background-color 0.2s ease;
 `;
 
 const SwitchButtonSelector = styled.div<SwitchButtonSelectorType>`
@@ -77,7 +88,7 @@ const SwitchButtonSelector = styled.div<SwitchButtonSelectorType>`
   position: absolute;
   height: 26px;
   width: 26px;
-  left: ${(p) => (p.selectorPosition ? '4px' : '34px' || '4px')};
+  left: ${(p) => (p.selectorPosition ? '34px' : '4px' || '4px')};
   top: 4px;
   border-radius: 100%;
   background-color: ${(p) => p.backgroundColor};
