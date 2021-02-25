@@ -54,6 +54,10 @@ export const UserInfo: React.FC<HTMLAttributes<HTMLDivElement>> = ({
   const submitChangePasswordForm = (e: any) => {
     e.preventDefault();
     if (displayPasswordField) {
+      if (form.newPassword === '' && form.oldPassword === '') {
+        setDisplayPasswordField(false);
+        return;
+      }
       let valid = 0;
       console.log(`isValidNewPassword = ${isValidNewPassword}`);
       if (isValidOldPassword) {
