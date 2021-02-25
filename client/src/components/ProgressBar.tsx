@@ -2,8 +2,6 @@ import styled from 'styled-components';
 import { globalPasswordStrong } from '../constants/validationConst';
 import { colors } from '../styles/colors';
 
-//TODO сделать нормальную валидацию (Кирилл)
-
 interface IProgressBar {
   fill: number;
   maxFill?: number;
