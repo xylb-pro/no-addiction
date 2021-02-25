@@ -27,11 +27,6 @@ export const SettingsPage: React.FC = () => {
 
   return (
     <Container maxWidth="470px">
-      <SwitchButton
-        switchButtonStyle="settings"
-        selectorPosition={false}
-        isElementLoading={false}
-      />
       <SettingsHeader />
       <UserInfo style={{ marginTop: '18px' }} />
       <SettingsSection
