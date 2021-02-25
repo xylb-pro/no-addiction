@@ -21,8 +21,6 @@ type SwitchButtonLayoutType = {
 
 type SwitchButtonStyleType = 'settings' | 'header';
 
-//TODO Add color change on change position. _xylb
-
 export const SwitchButton: React.FC<SwitchButtonType> = ({
   onClick = () => {},
   switchButtonStyle = 'header',
