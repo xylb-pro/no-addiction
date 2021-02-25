@@ -59,6 +59,8 @@ const ModalContent = styled.div<{ width?: string; padding?: string }>`
   background-color: #ffffff;
   border-radius: 20px;
   max-width: ${(props) => props.width};
+  max-height: 92vh;
+  overflow-y: auto;
   width: ${(props) => props.width};
   padding: ${(props) => props.padding};
   box-shadow: 0px 8px 29px rgba(0, 0, 0, 0.4);
