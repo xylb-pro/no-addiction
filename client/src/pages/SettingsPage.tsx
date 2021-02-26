@@ -9,7 +9,10 @@ import { Title } from '../components/Title';
 import { UserInfo } from '../containers/UserInfo';
 import { colors } from '../styles/colors';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUpdateIsOnCategory } from '../store/users/usersActions';
+import {
+  changeUserSettings,
+  fetchUpdateIsOnCategory,
+} from '../store/users/usersActions';
 import { RootState } from '../store/rootReducer';
 import { ReturnLastTimer } from '../containers/ReturnLastTimer';
 
@@ -19,9 +22,10 @@ export const SettingsPage: React.FC = () => {
   //TODO важно! use selector!
   // const categories = useSelector((state: RootState) => state.users.categories);
   // const [currentCategory, categories] = useSelector((state: RootState) => {return [selectCurrentCategoryById(state, state.users.currentCategoryId), state.users.categories]})
-  const { categories } = useSelector((state: RootState) => {
+  const { categories, userSettings } = useSelector((state: RootState) => {
     return {
       categories: state.users.categories,
+      userSettings: state.users.settings,
     };
   });
 
@@ -66,13 +70,27 @@ export const SettingsPage: React.FC = () => {
         >
           <SwitchButton
             switchButtonStyle={'settings'}
-            selectorPosition={true}
+            selectorPosition={userSettings.confirmWindow}
+            onClick={() =>
+              dispatch(
+                changeUserSettings({
+                  confirmWindow: !userSettings.confirmWindow,
+                }),
+              )
+            }
           />
         </SettingsSection>
         <SettingsSection title="Dark theme" marginTop="28px">
           <SwitchButton
             switchButtonStyle={'settings'}
-            selectorPosition={true}
+            selectorPosition={userSettings.darkTheme}
+            onClick={() =>
+              dispatch(
+                changeUserSettings({
+                  darkTheme: !userSettings.darkTheme,
+                }),
+              )
+            }
           />
         </SettingsSection>
       </Container>

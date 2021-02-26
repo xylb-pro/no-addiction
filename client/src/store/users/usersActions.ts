@@ -11,10 +11,8 @@ import {
 
 import {
   FETCH_REGISTER_EMAIL,
-  IUsersState,
   UserActionsType,
   UsersStateLoadingArgumentType,
-  USER_LANGUAGE_CHANGE,
   USER_SET_LOADER,
   GET_TOKEN_FROM_LOCALSTORAGE,
   CLEAR_AUTH_SESSION,
@@ -26,29 +24,13 @@ import {
   CHANGE_USER_PASSWORD,
   CHANGE_CURRENT_CATEGORY_ID,
   FETCH_UPDATE_CURRENT_CATEGORY_ID,
+  CHANGE_USER_SETTINGS,
+  settingsArgumentType,
 } from './usersTypes';
 
 import { requestHTTP, backEndLink } from '../../functions/requestHTTP';
 
 import { AsyncActionType } from '../timers/timersTypes';
-
-export const userLanguageChange = (payload: IUsersState): UserActionsType => {
-  return {
-    type: USER_LANGUAGE_CHANGE,
-    payload,
-  };
-};
-
-export const userSetLoader = (
-  payload: UsersStateLoadingArgumentType,
-): AsyncActionType => {
-  return (dispatch, getState) => {
-    dispatch({
-      type: USER_SET_LOADER,
-      payload: { ...getState().users.loading, ...payload },
-    });
-  };
-};
 
 /**
  * Register with email and save token
@@ -346,5 +328,27 @@ export const fetchUpdateUserCategoryId = (
     } catch (error) {
       console.log(error);
     }
+  };
+};
+
+export const userSetLoader = (
+  payload: UsersStateLoadingArgumentType,
+): AsyncActionType => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: USER_SET_LOADER,
+      payload: { ...getState().users.loading, ...payload },
+    });
+  };
+};
+
+export const changeUserSettings = (
+  payload: settingsArgumentType,
+): AsyncActionType => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: CHANGE_USER_SETTINGS,
+      payload: { ...getState().users.settings, ...payload },
+    });
   };
 };

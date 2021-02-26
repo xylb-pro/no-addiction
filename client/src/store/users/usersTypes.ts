@@ -12,12 +12,15 @@ export const CHANGE_USER_PASSWORD = 'USER/CHANGE_USER_PASSWORD';
 export const CHANGE_CURRENT_CATEGORY_ID = 'USER/CHANGE_CURRENT_CATEGORY_ID';
 export const FETCH_UPDATE_CURRENT_CATEGORY_ID =
   'USER/FETCH_CHANGE_CURRENT_CATEGORY_ID';
+export const CHANGE_USER_SETTINGS = 'USER/CHANGE_USER_SETTINGS';
 
-export interface IUsersStateLoading {
+export type languagesType = 'ru' | 'en';
+
+export type IUsersStateLoading = {
   main: boolean;
   component: boolean;
   headerSwitcher: boolean;
-}
+};
 export type UsersStateLoadingArgumentType = {
   main?: boolean;
   component?: boolean;
@@ -25,27 +28,34 @@ export type UsersStateLoadingArgumentType = {
 };
 
 //categories with isOn type
-export type categories = {
+export type categoriesType = {
   id: number;
   name: string;
   isOn: boolean;
 };
 
+export type settingsType = {
+  userLanguage: languagesType;
+  confirmWindow: boolean;
+  darkTheme: boolean;
+};
+
+export type settingsArgumentType = {
+  userLanguage?: languagesType;
+  confirmWindow?: boolean;
+  darkTheme?: boolean;
+};
+
 //userstore types
 export interface IUsersState {
-  userLanguage: string;
   username: string;
   email: string;
   currentCategoryId: number;
-  categories: categories[];
+  categories: categoriesType[];
   token: string;
   isAuth: boolean;
   loading: IUsersStateLoading;
-}
-
-interface userLanguageChange {
-  type: typeof USER_LANGUAGE_CHANGE;
-  payload: IUsersState;
+  settings: settingsType;
 }
 
 interface userSetLoader {
@@ -82,11 +92,11 @@ interface fetchCurrentUserInfo {
 
 interface fetchUpdateIsOnCategory {
   type: typeof FETCH_UPDATE_IS_ON_CATEGORY;
-  payload: { categories: categories[] };
+  payload: { categories: categoriesType[] };
 }
 interface fetchCategories {
   type: typeof FETCH_CATEGORIES;
-  payload: { categories: categories[] };
+  payload: { categories: categoriesType[] };
 }
 
 interface changeUserPassword {
@@ -102,8 +112,12 @@ interface fetchChangeCurrentCategory {
   type: typeof FETCH_UPDATE_CURRENT_CATEGORY_ID;
 }
 
+interface changeUserSettings {
+  type: typeof CHANGE_USER_SETTINGS;
+  payload: settingsType;
+}
+
 export type UserActionsType =
-  | userLanguageChange
   | userSetLoader
   | clearAuthSession
   | getTokenFromLocalStorage
@@ -115,4 +129,5 @@ export type UserActionsType =
   | registerWithEmail
   | changeCurrentCategoryId
   | fetchChangeCurrentCategory
-  | changeUserPassword;
+  | changeUserPassword
+  | changeUserSettings;

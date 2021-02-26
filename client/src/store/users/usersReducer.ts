@@ -3,7 +3,6 @@ import { RootState } from '../rootReducer';
 import {
   IUsersState,
   UserActionsType,
-  USER_LANGUAGE_CHANGE,
   USER_SET_LOADER,
   GET_TOKEN_FROM_LOCALSTORAGE,
   FETCH_REGISTER_EMAIL,
@@ -16,10 +15,10 @@ import {
   CHANGE_USER_PASSWORD,
   CHANGE_CURRENT_CATEGORY_ID,
   FETCH_UPDATE_CURRENT_CATEGORY_ID,
+  CHANGE_USER_SETTINGS,
 } from './usersTypes';
 
 const initialState: IUsersState = {
-  userLanguage: 'ru',
   currentCategoryId: 1,
   categories: [],
   username: '',
@@ -31,6 +30,11 @@ const initialState: IUsersState = {
     component: false,
     headerSwitcher: false,
   },
+  settings: {
+    userLanguage: 'ru',
+    confirmWindow: true,
+    darkTheme: false,
+  },
 };
 
 export const usersReducer = (
@@ -38,8 +42,6 @@ export const usersReducer = (
   action: UserActionsType,
 ): IUsersState => {
   switch (action.type) {
-    case USER_LANGUAGE_CHANGE:
-      return { ...state, userLanguage: action.payload.userLanguage };
     case USER_SET_LOADER:
       return { ...state, loading: action.payload };
     case FETCH_REGISTER_EMAIL:
@@ -64,6 +66,8 @@ export const usersReducer = (
       return { ...state };
     case CHANGE_USER_PASSWORD:
       return { ...state };
+    case CHANGE_USER_SETTINGS:
+      return { ...state, settings: action.payload };
     default:
       return state;
   }

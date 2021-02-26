@@ -79,7 +79,9 @@ const SwitchButtonLayout = styled.div<SwitchButtonLayoutType>`
   border: none;
   background-color: ${(p) => p.backgroundColor};
   user-select: none;
+  cursor: pointer;
   transition: background-color ${transitionDuration} ease;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
 `;
 
 const SwitchButtonSelector = styled.div<SwitchButtonSelectorType>`
@@ -92,4 +94,5 @@ const SwitchButtonSelector = styled.div<SwitchButtonSelectorType>`
   border-radius: 100%;
   background-color: ${(p) => p.backgroundColor};
   transition: left ${transitionDuration} ease;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4);
 `;
